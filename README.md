@@ -64,7 +64,6 @@ frontend/
     components/         layout, diagrammer og gjenbrukbare kort
     pages/              dashboard, portefølje, innsikter og Copilot
 docs/
-  architecture.md      målarkitektur for data og AI i produksjon
   workshop.md           oppgave og leveranser for deltakerne
   twist-cards.md        fire scenarioendringer for workshopen
   itok-guide.md         ikke-teknisk guide til hva workshopen forventer
@@ -168,7 +167,7 @@ HTTPS-adressen og distribuerer frontend på nytt.
 - Autentisering, tilgangsstyring, samtykkehåndtering og observability på produksjonsnivå er
   dokumenterte designtemaer, men er ikke implementert her.
 
-Se `docs/architecture.md` og `docs/workshop.md` for anbefalte neste steg.
+Se `docs/workshop.md` for anbefalte neste steg.
 
 Er du usikker på hva workshopen faktisk forventer, spesielt hvis du ikke skal kode selv?
 Se `docs/itok-guide.md` for en ikke-teknisk gjennomgang.
