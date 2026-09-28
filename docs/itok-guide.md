@@ -1,13 +1,14 @@
 # ITØK-guide: Hva går workshopen egentlig ut på?
 
-Denne guiden er for deg som er usikker på hva oppgaven forventer.
+## Problemstilling
+
+Hvordan bygger man en moderne dataplattform for fremtidens kapitalforvaltning?
 
 ## Kort sagt
 
 Dette er **ikke** en programmeringsoppgave. Det er en case-oppgave hvor dere har fått et
 ferdig, fungerende demo-produkt (Wealth Copilot), og skal jobbe som et team som skal
-**videreutvikle det som et produkt** — med IT-forståelse og økonomifaglig forståelse i skjønn
-forening.
+**videreutvikle det som et produkt**
 
 Dere kan velge selv hvor teknisk dere vil gå:
 
