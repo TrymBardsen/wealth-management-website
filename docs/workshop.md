@@ -11,14 +11,14 @@ Copilot CLI.
 
 ## 8 spørsmål å svare på
 
-1. Hvilke data bør samles inn?
+1. Hvilke data bør samles inn, og hvor kommer de fra?
 2. Hvordan bør dataplattformen designes?
-3. Hvilke teknologier bør brukes?
-4. Hvordan bør datakvalitet sikres?
+3. Hvilke teknologier bør brukes, og hvorfor akkurat disse?
+4. Hvordan bør datakvalitet sikres, og hva skjer når data mangler eller er feil?
 5. Hvordan bør sikkerhet og personvern håndteres?
-6. Hvordan kan AI skape verdi?
-7. Hvordan bør sanntidsdata håndteres?
-8. Hva er de største risikoene?
+6. Hvordan kan AI skape verdi, og hva bør AI-en aldri få lov til å gjøre?
+7. Hvordan bør sanntidsdata og oppdateringer håndteres?
+8. Hva er de største risikoene, og hvordan reduserer dere dem?
 
 Se `docs/itok-guide.md` for en enklere, ikke-teknisk gjennomgang av disse 8 spørsmålene,
 med både en IT-vinkel og en økonomi-vinkel for hvert av dem.
@@ -28,7 +28,8 @@ med både en IT-vinkel og en økonomi-vinkel for hvert av dem.
 ### 1. Forstå utgangspunktet
 
 Kjør applikasjonen, bytt mellom de fiktive kundene og se på API-svarene bak Dashboard,
-Portefølje, Innsikter og Wealth Copilot.
+Portefølje, Innsikter og Wealth Copilot. Prøv å svare på: Hvilke data ligger bak hver
+skjerm, og hvor "ferske" er de?
 
 ### 2. Velg et kundeproblem
 
@@ -39,19 +40,37 @@ kommer fra.
 ### 3. Design dataflyten
 
 Identifiser kildedata, krav til ferskhet, kvalitetsregler, behov for identitet/samtykke og
-hvilket API eller hvilken hendelse som støtter opplevelsen.
+hvilket API eller hvilken hendelse som støtter opplevelsen. Skisser gjerne dette som et enkelt
+arkitekturdiagram (bokser og piler holder fint).
 
 ### 4. Lag en prototype
 
 Bruk de eksisterende API- og UI-mønstrene. Hold beregningene deterministiske og forklarbare.
 Hvis dere legger til et AI-lag, definer nøyaktig hva modellen har lov til og ikke lov til.
 
-### 5. Evaluer
+### 5. Utfordre løsningen med et nytt scenario
+
+Velg ett av scenarioene under og diskuter hvordan løsningen deres bør endres. Dere trenger
+ikke bygge alt - poenget er å vise at dere har tenkt gjennom konsekvensene.
+
+- **Eksterne investeringer:** Kunden har investeringer hos en annen finansinstitusjon.
+  Hvordan håndterer dere samtykke, ferskhet på data, kobling av instrumenter, bekreftelse av
+  eierskap og manglende kostpris? Hva sier Copilot når eksterne data er ufullstendige?
+- **Kjøp skal vises umiddelbart:** Kunden kjøper et aktivum og forventer at Wealth Copilot
+  reflekterer endringen med en gang. Hvordan håndterer dere ventende versus oppgjorte
+  posisjoner, prisens ferskhet og foreløpige verdier i grensesnittet?
+- **Åpenhet om personopplysninger:** Kunden ber om å få vist nøyaktig hvilke
+  personopplysninger som ble brukt til å lage en AI-innsikt. Hvordan viser dere dataopprinnelse
+  og svarer på «Hvorfor ser jeg dette?»
+- **Feil AI-innsikt:** AI-en gir kunden en feilaktig investeringsrelatert innsikt. Hvordan
+  oppdager, forklarer og retter dere dette, og hvem bør varsles?
+
+### 6. Evaluer
 
 Test normale tilfeller og kanttilfeller, se på dataopprinnelse, utfordre antakelser og
 forklar hvordan feil håndteres.
 
-### 6. Designoppgave (valgfri): gi appen en Nordea-inspirert stil
+### 7. Designoppgave (valgfri): gi appen en Nordea-inspirert stil
 
 Gjør frontend mer visuelt lik en typisk nettbank, inspirert av en mørk og kraftig blåfarge,
 ren nordisk stil og en tydelig topplinje/topptekst.

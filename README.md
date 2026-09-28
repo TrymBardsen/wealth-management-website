@@ -64,8 +64,7 @@ frontend/
     components/         layout, diagrammer og gjenbrukbare kort
     pages/              dashboard, portefølje, innsikter og Copilot
 docs/
-  workshop.md           oppgave og leveranser for deltakerne
-  twist-cards.md        fire scenarioendringer for workshopen
+  workshop.md           oppgave, sporsmal, arbeidssteg og leveranser for deltakerne
   itok-guide.md         ikke-teknisk guide til hva workshopen forventer
 prompts/
   *.md                  eksempler på GitHub Copilot CLI-prompter

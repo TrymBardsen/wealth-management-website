@@ -85,6 +85,5 @@ kort oppsummert:
 ## Hvor finner jeg mer?
 
 - `README.md` — hvordan kjøre appen og hvordan datamodellene henger sammen
-- `docs/workshop.md` — selve oppgaveteksten og de 8 spørsmålene
-- `docs/twist-cards.md` — ekstra scenarioer hvis dere blir ferdige tidlig
+- `docs/workshop.md` — selve oppgaveteksten, de 8 spørsmålene og arbeidsstegene
 - `prompts/` — ferdige prompts for å utforske/endre koden med GitHub Copilot CLI
