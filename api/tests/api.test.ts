@@ -44,6 +44,53 @@ describe('GET /customers/:customerId/portfolio', () => {
   })
 })
 
+describe('GET /customers/:customerId/accounts and investments', () => {
+  it('derives investment and pension account balances from linked positions', async () => {
+    const [accountsResponse, investmentsResponse, portfolioResponse] = await Promise.all([
+      request(app).get(`/customers/${sampleCustomerId}/accounts`),
+      request(app).get(`/customers/${sampleCustomerId}/investments`),
+      request(app).get(`/customers/${sampleCustomerId}/portfolio`),
+    ])
+
+    expect(accountsResponse.status).toBe(200)
+    expect(investmentsResponse.status).toBe(200)
+    expect(portfolioResponse.status).toBe(200)
+
+    const accounts = accountsResponse.body.accounts as Array<{
+      account_id: string
+      account_type: string
+      balance: number
+    }>
+    const investments = investmentsResponse.body.investments as Array<{
+      customer_id: string
+      account_id: string
+      quantity: number
+      current_price: number
+    }>
+    const accountIds = new Set(accounts.map((account) => account.account_id))
+
+    expect(investments.every((investment) =>
+      investment.customer_id === sampleCustomerId && accountIds.has(investment.account_id),
+    )).toBe(true)
+    expect(portfolioResponse.body.largest_holdings.every((holding: { account_id: string }) =>
+      accountIds.has(holding.account_id),
+    )).toBe(true)
+
+    for (const account of accounts) {
+      if (account.account_type !== 'Investment Account' && account.account_type !== 'Pension') continue
+      const positionValue = investments
+        .filter((investment) => investment.account_id === account.account_id)
+        .reduce((sum, investment) => sum + investment.quantity * investment.current_price, 0)
+      expect(account.balance).toBeCloseTo(positionValue, 2)
+    }
+
+    const investmentAccountValue = accounts
+      .filter((account) => account.account_type === 'Investment Account' || account.account_type === 'Pension')
+      .reduce((sum, account) => sum + account.balance, 0)
+    expect(Math.abs(investmentAccountValue - portfolioResponse.body.total_value)).toBeLessThanOrEqual(0.01)
+  })
+})
+
 describe('GET /customers/:customerId/risk', () => {
   it('returns a risk score within 0-100 and a disclaimer', async () => {
     const res = await request(app).get(`/customers/${sampleCustomerId}/risk`)

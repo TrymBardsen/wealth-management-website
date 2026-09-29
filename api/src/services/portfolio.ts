@@ -13,6 +13,7 @@ export interface AllocationSlice {
 
 export interface HoldingSummary {
   investment_id: string
+  account_id: string
   ticker: string
   name: string
   asset_type: string
@@ -78,6 +79,7 @@ export function calculatePortfolio(customerId: string): PortfolioSummary {
       const cost = costBasis(h)
       return {
         investment_id: h.investment_id,
+        account_id: h.account_id,
         ticker: h.ticker,
         name: h.name,
         asset_type: h.asset_type,

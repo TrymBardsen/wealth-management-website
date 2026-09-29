@@ -27,6 +27,20 @@ export const transactions: Transaction[] = loadJson<Transaction[]>('transactions
 export const investments: Investment[] = loadJson<Investment[]>('investments.json')
 export const marketData: MarketDataPoint[] = loadJson<MarketDataPoint[]>('market_data.json')
 
+const investmentValueByAccount = new Map<string, number>()
+for (const investment of investments) {
+  const value = investment.quantity * investment.current_price
+  investmentValueByAccount.set(
+    investment.account_id,
+    (investmentValueByAccount.get(investment.account_id) ?? 0) + value,
+  )
+}
+for (const account of accounts) {
+  if (account.account_type === 'Investment Account' || account.account_type === 'Pension') {
+    account.balance = Number((investmentValueByAccount.get(account.account_id) ?? 0).toFixed(2))
+  }
+}
+
 const customerById = new Map(customers.map((c) => [c.customer_id, c]))
 const accountsByCustomer = new Map<string, Account[]>()
 for (const account of accounts) {

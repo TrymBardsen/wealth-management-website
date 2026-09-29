@@ -108,6 +108,7 @@ for (const customer of customers) {
   list.push(addAccount(customer.customer_id, 'Current Account', 'NOK', float(4000, 85000)))
   if (chance(0.85)) list.push(addAccount(customer.customer_id, 'Savings', 'NOK', float(10000, 650000)))
   const hasInvestmentAccount = chance(0.7)
+  // Keep consuming the seeded placeholder values so unrelated generated data remains stable.
   if (hasInvestmentAccount) list.push(addAccount(customer.customer_id, 'Investment Account', 'NOK', float(0, 20000)))
   const hasPension = customer.age >= 25 && chance(0.6)
   if (hasPension) list.push(addAccount(customer.customer_id, 'Pension', 'NOK', float(20000, 900000)))
@@ -156,11 +157,15 @@ for (const customer of customers) {
   const info = accountsByCustomer.get(customer.customer_id)
   if (!info.hasInvestmentAccount && !info.hasPension) continue
 
+  const investmentAccounts = info.list.filter(
+    (account) => account.account_type === 'Investment Account' || account.account_type === 'Pension',
+  )
   const holdingCount = int(3, 10)
   const chosen = new Set()
   while (chosen.size < holdingCount) {
     chosen.add(pick(ALL_INSTRUMENTS).ticker)
   }
+  let holdingIndex = 0
   for (const ticker of chosen) {
     const instrument = ALL_INSTRUMENTS.find((i) => i.ticker === ticker)
     const currentPrice = latestPriceByTicker.get(ticker)
@@ -173,6 +178,7 @@ for (const customer of customers) {
     investments.push({
       investment_id: `INV-${String(investmentCounter).padStart(6, '0')}`,
       customer_id: customer.customer_id,
+      account_id: investmentAccounts[holdingIndex % investmentAccounts.length].account_id,
       asset_type: instrument.assetType,
       ticker: instrument.ticker,
       name: instrument.name,
@@ -184,6 +190,22 @@ for (const customer of customers) {
       geography: instrument.geography,
     })
     investmentCounter += 1
+    holdingIndex += 1
+  }
+}
+
+// Investment and pension account balances are derived from their positions.
+const investmentValueByAccount = new Map()
+for (const investment of investments) {
+  const value = investment.quantity * investment.current_price
+  investmentValueByAccount.set(
+    investment.account_id,
+    (investmentValueByAccount.get(investment.account_id) ?? 0) + value,
+  )
+}
+for (const account of accounts) {
+  if (account.account_type === 'Investment Account' || account.account_type === 'Pension') {
+    account.balance = Number((investmentValueByAccount.get(account.account_id) ?? 0).toFixed(2))
   }
 }
 

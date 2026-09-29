@@ -2,13 +2,16 @@
 
 ## Problemstilling
 
-Hvordan bygger man en moderne dataplattform for fremtidens kapitalforvaltning?
+I samarbeid med Private Banking utforsker dere hvordan Wealth Copilot kan gjøre kundens
+økonomi og investeringer enklere å forstå. I `docs/workshop.md` velger gruppa ett av tre
+problemområder: forklare porteføljeutvikling, synliggjøre investeringsrisiko eller følge
+utviklingen mot et økonomisk mål.
 
 ## Kort sagt
 
-Dette er **ikke** en programmeringsoppgave. Det er en case-oppgave hvor dere har fått et
-ferdig, fungerende demo-produkt (Wealth Copilot), og skal jobbe som et team som skal
-**videreutvikle det som et produkt**
+Dette er **ikke** først og fremst en programmeringsoppgave. Det er en case-oppgave hvor dere
+har fått et fungerende demo-produkt (Wealth Copilot), og skal jobbe som et team for å
+**videreutvikle det som et produkt**.
 
 Dere kan velge selv hvor teknisk dere vil gå:
 
@@ -33,8 +36,11 @@ API-et består av både rådata og beregnede modeller:
 
 - En **kunde** kan ha én eller flere **kontoer**.
 - En konto kan ha mange **transaksjoner**, for eksempel innbetalinger, uttak og overføringer.
-- En kunde kan ha mange **investeringer**. En investering er kundens konkrete beholdning
-  i et instrument, med antall, kjøpspris og nåværende pris.
+- En **investerings- eller pensjonskonto** kan ha mange **investeringsposisjoner**. Hver
+  posisjon har en `account_id` som viser hvilken konto den tilhører. Kontoverdien beregnes
+  ved å summere posisjonenes markedsverdi (antall × nåværende pris).
+- En investering er kundens konkrete beholdning i et instrument, med antall, kjøpspris og
+  nåværende pris.
 - Et **instrument** er selve produktet, for eksempel en aksje, ETF, et fond, en obligasjon
   eller kontanter. Det samme instrumentet kan eies av mange kunder.
 - **Markedsdata** beskriver hvordan prisen på et instrument har utviklet seg over tid.
@@ -47,8 +53,12 @@ Se «Datamodeller i API-et» i `README.md` for feltene som inngår i hver modell
 
 ## Hva skal dere egentlig gjøre?
 
-Se de 8 spørsmålene i `docs/workshop.md`. De er kjernen i oppgaven. For hvert spørsmål,
-tenk over **både** IT-siden og økonomi-siden:
+Velg ett av de tre Private Banking-problemområdene i `docs/workshop.md`. Finn ut hva kunden
+trenger å forstå, hvilke data som trengs for å forklare det, og hvordan løsningen kan vise
+forklaringen på en tydelig måte. Dere trenger ikke bygge en full bankløsning.
+
+De 8 spørsmålene i `docs/workshop.md` hjelper dere med å tenke gjennom både IT-siden og
+økonomi-siden:
 
 | Spørsmål                          | IT-vinkel                                | Økonomi-vinkel                                  |
 | --------------------------------- | ---------------------------------------- | ----------------------------------------------- |

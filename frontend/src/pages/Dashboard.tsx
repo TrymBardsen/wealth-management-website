@@ -50,7 +50,10 @@ export default function Dashboard() {
   const cashBalance = accounts
     .filter((a) => a.account_type === 'Current Account' || a.account_type === 'Savings')
     .reduce((sum, a) => sum + a.balance, 0)
-  const netWorth = cashBalance + portfolio.total_value
+  const investmentAccountBalance = accounts
+    .filter((a) => a.account_type === 'Investment Account' || a.account_type === 'Pension')
+    .reduce((sum, a) => sum + a.balance, 0)
+  const netWorth = cashBalance + investmentAccountBalance
 
   return (
     <div className="page">

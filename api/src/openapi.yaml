@@ -363,6 +363,9 @@ components:
 
     Account:
       type: object
+      description: >
+        Customer account. For Investment Account and Pension, balance is derived
+        from the market value of the investment positions assigned to this account.
       properties:
         account_id:
           type: string
@@ -375,6 +378,7 @@ components:
           type: string
         balance:
           type: number
+          description: Account balance in the account currency.
 
     Transaction:
       type: object
@@ -402,11 +406,15 @@ components:
 
     Investment:
       type: object
+      description: A customer position in an instrument, assigned to one account.
       properties:
         investment_id:
           type: string
         customer_id:
           type: string
+        account_id:
+          type: string
+          description: Account that holds this investment position.
         asset_type:
           type: string
           enum: [Equity, ETF, Mutual Fund, Bond, Cash]
@@ -460,6 +468,9 @@ components:
       properties:
         investment_id:
           type: string
+        account_id:
+          type: string
+          description: Account that holds this investment position.
         ticker:
           type: string
         name:

@@ -36,6 +36,7 @@ export interface Transaction {
 export interface Investment {
   investment_id: string
   customer_id: string
+  account_id: string
   asset_type: 'Equity' | 'ETF' | 'Mutual Fund' | 'Bond' | 'Cash'
   ticker: string
   name: string

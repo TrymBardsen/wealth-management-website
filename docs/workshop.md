@@ -2,12 +2,49 @@
 
 ## Utfordringen
 
-Design og lag en prototype av en Wealth Copilot som gir kunder en samlet og intelligent
-oversikt over sin økonomiske situasjon.
+I samarbeid med Private Banking skal dere utforske hvordan Wealth Copilot kan gjøre kundens
+økonomi og investeringer enklere å forstå. Velg ett av de tre problemområdene under, og
+design en løsning som gir kunden forklaringer og innsikt hun eller han kan stole på.
 
 Ta utgangspunkt i den fungerende demoen i dette repoet. Deltakere kan utforske API-et, utvide
 frontend, endre de syntetiske dataene og bruke instruksjonene i `/prompts` sammen med GitHub
 Copilot CLI.
+
+## Velg ett problemområde
+
+### A. Forstå hvorfor porteføljen utvikler seg
+
+**Problemstilling:** Hvordan kan Wealth Copilot forklare porteføljeutviklingen gjennom
+forståelige analyser og personlige innsikter?
+
+**Kundecase:** Anne (52) ser at porteføljen har steget med 7 % det siste halvåret, men ser
+bare totalsummen. Hun vil forstå hvilke investeringer som har påvirket utviklingen mest,
+om økningen skyldes markedet eller egne investeringsvalg, og om utviklingen er forventet
+gitt risikoprofilen hennes. Forklaringen bør være enkel og unngå unødvendige fagbegreper.
+
+### B. Gjør investeringsrisiko synlig og forståelig
+
+**Problemstilling:** Hvordan kan Wealth Copilot vise kundens investeringsrisiko på en måte
+som er forståelig og relevant for kundens mål?
+
+**Kundecase:** Jonas (36) oppfatter risikoprofilen sin som moderat, men porteføljen hans har
+gradvis fått større eksponering mot teknologiaksjer og globale aksjefond. Når markedet faller,
+blir han overrasket over svingningene. Han vil forstå hvor risikoen kommer fra, hvilke
+investeringer som bidrar mest, og om porteføljen fortsatt samsvarer med målene hans.
+
+### C. Følg med på økonomiske mål
+
+**Problemstilling:** Hvordan kan Wealth Copilot hjelpe kunder med å forstå om de ligger an
+til å nå økonomiske mål, og hvilke faktorer som påvirker muligheten for å nå dem?
+
+**Kundecase:** Maria (29) ønsker å bli økonomisk uavhengig innen ti år og sparer hver måned.
+Hun vil forstå om sparebeløpet kan være tilstrekkelig, hvordan markedsutviklingen påvirker
+målet, og om hun ligger foran eller bak planen.
+
+Alle tre problemområdene er like gyldige. Velg det som interesserer gruppa mest. Vær tydelige
+på hvilke data og beregninger demoen allerede har, hva dere eventuelt må legge til, og hvilke
+antakelser forklaringen bygger på. Særlig en prognose for Marias mål må presenteres som et
+usikkert scenario, ikke som et løfte eller en garanti.
 
 ## 8 spørsmål å svare på
 
@@ -29,13 +66,13 @@ med både en IT-vinkel og en økonomi-vinkel for hvert av dem.
 
 Kjør applikasjonen, bytt mellom de fiktive kundene og se på API-svarene bak Dashboard,
 Portefølje, Innsikter og Wealth Copilot. Prøv å svare på: Hvilke data ligger bak hver
-skjerm, og hvor "ferske" er de?
+skjerm, og hvor "ferske" er de? Se også etter hva demoen ikke kan svare på i det valgte
+problemområdet.
 
 ### 2. Velg et kundeproblem
 
-Eksempler: veiledning om kontantstrøm, forklaring av porteføljediversifisering,
-pensjonsplanlegging, konsolidering av eksterne aktiva eller tydelig sporing av hvor dataene
-kommer fra.
+Velg ett av de tre problemområdene og kundecase-beskrivelsene over. Skriv kort hva kunden
+prøver å forstå, og hvordan en bedre forklaring kan hjelpe kunden.
 
 ### 3. Design dataflyten
 

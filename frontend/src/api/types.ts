@@ -38,6 +38,7 @@ export interface Transaction {
 export interface Investment {
   investment_id: string
   customer_id: string
+  account_id: string
   asset_type: string
   ticker: string
   name: string
@@ -57,6 +58,7 @@ export interface AllocationSlice {
 
 export interface HoldingSummary {
   investment_id: string
+  account_id: string
   ticker: string
   name: string
   asset_type: string
