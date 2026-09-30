@@ -5,15 +5,16 @@
 I samarbeid med Private Banking ønsker Nordea å utvikle en Wealth Copilot som skal gjøre kundens
 økonomi og investeringer enklere å forstå.
 
-Ta utgangspunkt i den fungerende demoen i dette repoet. Deltakere kan utforske API-et, utvide
-frontend, endre de syntetiske dataene og bruke instruksjonene i `/prompts` sammen med GitHub
-Copilot CLI/claud code eller liknende.
+Ta utgangspunkt i demoen i dette repoet. Dere kan utforske API-et, skissere en løsning,
+endre frontend eller syntetiske data og bruke instruksjonene i `/prompts` med GitHub Copilot
+CLI, Claude Code eller lignende verktøy.
 
 ## Velg ett problemområde
 
-Under er det beskrevet tre reelle problemstillinger og kundecaser som privat banking har i dag.
-Ta utgangspunkt i ett eller fler og finn ut hva kunden trenger å forstå, hvilke data som trengs for å forklare det, og hvordan løsningen kan hjelpe
-kunden på en god måte. Dere trenger ikke bygge en full bankløsning. Svar så godt dere kan på de 8 spørsmålene mens dere jobber med kundecaset.
+Under er tre problemstillinger med kundecaser fra Private Banking. Velg ett spor og undersøk
+hva kunden trenger å forstå, hvilke data som trengs, og hvordan løsningen kan hjelpe. Dere
+trenger ikke bygge en full bankløsning. Bruk de åtte spørsmålene som støtte mens dere jobber
+med caset, og legg mest vekt på spørsmålene som er relevante for det dere velger.
 
 ### A. Forstå hvorfor porteføljen utvikler seg
 
@@ -25,6 +26,11 @@ bare totalsummen. Hun vil forstå hvilke investeringer som har påvirket utvikli
 om økningen skyldes markedet eller egne investeringsvalg, og om utviklingen er forventet
 gitt risikoprofilen hennes. Forklaringen bør være enkel og unngå unødvendige fagbegreper.
 
+**Begrensning i demoen:** Markedsdataene er syntetiske og dekker omtrent 90 dager. Den
+historiske beregningen bruker dagens beholdninger gjennom hele perioden, så demoen kan ikke
+forklare et faktisk halvårsresultat eller skille markedsbevegelser fra kundens kjøp og salg.
+De 7 prosentene er en del av kundecaset, ikke et tall dere skal forvente å finne i demoen.
+
 ### B. Gjør investeringsrisiko synlig og forståelig
 
 **Problemstilling:** Hvordan kan Wealth Copilot vise kundens investeringsrisiko på en måte
@@ -35,6 +41,10 @@ gradvis fått større eksponering mot teknologiaksjer og globale aksjefond. Når
 blir han overrasket over svingningene. Han vil forstå hvor risikoen kommer fra, hvilke
 investeringer som bidrar mest, og om porteføljen fortsatt samsvarer med målene hans.
 
+**Begrensning i demoen:** Risikoscoren er en pedagogisk forenkling, ikke en reell
+risikovurdering. API-et viser ikke hvor mye hver enkelt investering bidrar til risikoen, og
+demoen inneholder ikke historikk over hvordan Jonas' portefølje gradvis har endret seg.
+
 ### C. Følg med på økonomiske mål
 
 **Problemstilling:** Hvordan kan Wealth Copilot hjelpe kunder med å forstå om de ligger an
@@ -44,9 +54,13 @@ til å nå økonomiske mål, og hvilke faktorer som påvirker muligheten for å 
 Hun vil forstå om sparebeløpet kan være tilstrekkelig, hvordan markedsutviklingen påvirker
 målet, og om hun ligger foran eller bak planen.
 
-Alle tre problemområdene er like gyldige. Velg det som interesserer gruppa mest. Vær tydelige
-på hvilke data og beregninger demoen allerede har, hva dere eventuelt må legge til, og hvilke
-antakelser forklaringen bygger på.
+**Begrensning i demoen:** Demoen har ikke registrert Marias økonomiske mål, og transaksjonene
+dekker bare en kort periode. For å lage en prognose må dere foreslå manglende opplysninger og
+gjøre antakelser om blant annet sparebeløp, tidshorisont og avkastning.
+
+Alle tre problemområdene er like gyldige. Vær tydelige på hvilke data og beregninger demoen
+allerede har, hva dere eventuelt må legge til, og hvilke antakelser forklaringen bygger på.
+Prognoser må presenteres som usikre scenarioer, ikke som løfter eller garantier.
 
 ## 8 spørsmål å svare på
 
@@ -59,18 +73,21 @@ antakelser forklaringen bygger på.
 7. Hvordan bør sanntidsdata og oppdateringer håndteres?
 8. Hva er de største risikoene, og hvordan reduserer dere dem?
 
+Spørsmålene er ment som støtte for diskusjonen. Dere trenger ikke besvare alle like grundig;
+prioriter dem som er viktigst for problemområdet dere har valgt.
+
 ## Foreslåtte arbeidssteg
 
 ### 1. Forstå utgangspunktet
 
 Kjør applikasjonen, bytt mellom de fiktive kundene og se på API-svarene bak Dashboard,
-Portefølje, Innsikter og Wealth Copilot. Prøv å svare på: Hvilke data ligger bak hver
-skjerm og tall. Se også etter hva demoen ikke kan svare på i det valgte problemområdet.
+Portefølje, Innsikter og Wealth Copilot. Undersøk hvilke data som ligger bak visningene og
+tallene, og hva demoen ikke kan svare på i det valgte problemområdet.
 
-### 2. Velg et kundeproblem
+### 2. Avgrens kundeproblemet
 
-Velg ett av de tre problemområdene og kundecase-beskrivelsene over. Skriv kort hva kunden
-prøver å forstå, og hvordan en bedre forklaring kan hjelpe kunden.
+Beskriv hva kunden prøver å forstå, hvilken informasjon kunden trenger, og hvordan dere kan
+se om løsningen faktisk hjelper.
 
 ### 3. Design dataflyten
 
@@ -78,15 +95,22 @@ Identifiser kildedata, krav til ferskhet, kvalitetsregler, behov for identitet/s
 hvilket API eller hvilken hendelse som støtter opplevelsen. Skisser gjerne dette som et enkelt
 arkitekturdiagram (bokser og piler holder fint).
 
-### 4. Lag en prototype
+### 4. Lag en løsning
 
-Bruk de eksisterende API- og UI-mønstrene. Prøv å legg til en feature som løser kundeproblemet ved hjelp av vibecoding eller tegning.
-Hold beregningene deterministiske og forklarbare. Hvis dere legger til et AI-lag, definer nøyaktig hva modellen har lov til og ikke lov til.
+Lag enten en enkel kodeprototype med de eksisterende API- og UI-mønstrene, eller skisser
+løsningen og brukeropplevelsen. Hold beregningene deterministiske og forklarbare. Dere
+trenger ikke koble til en ekte språkmodell. Hvis dere foreslår et AI-lag, beskriv hva det kan
+gjøre, hvilke data det bruker, og hvilke begrensninger det skal ha.
 
-### 5. Utfordre løsningen med et nytt scenario
+### 5. Evaluer løsningen
+
+Test eller gå gjennom løsningen med vanlige tilfeller og minst ett tilfelle der data mangler,
+er utdatert eller kan misforstås. Forklar hvordan løsningen håndterer usikkerhet og feil.
+
+### 6. Utfordre løsningen med et nytt scenario (valgfritt)
 
 Velg ett av scenarioene under og diskuter hvordan løsningen deres bør endres. Dere trenger
-ikke bygge alt - poenget er å vise at dere har tenkt gjennom konsekvensene.
+ikke bygge scenarioet; bruk det som en valgfri stresstest av ideen.
 
 - **Eksterne investeringer:** Kunden har investeringer hos en annen finansinstitusjon.
   Hvordan håndterer dere samtykke, ferskhet på data, kobling av instrumenter, bekreftelse av
@@ -100,7 +124,7 @@ ikke bygge alt - poenget er å vise at dere har tenkt gjennom konsekvensene.
 - **Feil AI-innsikt:** AI-en gir kunden en feilaktig investeringsrelatert innsikt. Hvordan
   oppdager, forklarer og retter dere dette, og hvem bør varsles?
 
-### 6. Designoppgave (valgfri): gi appen en Nordea-inspirert stil
+### 7. Designoppgave (valgfri): gi appen en Nordea-inspirert stil
 
 Gjør frontend mer visuelt lik en typisk nettbank, inspirert av en mørk og kraftig blåfarge,
 ren nordisk stil og en tydelig topplinje/topptekst.
@@ -117,9 +141,8 @@ arkitektur.
 
 ## Leveranser
 
-- fungerende prototype
-- arkitekturdiagram
-- teknologivalg
-- forretningsverdi
-- risikoer og utfordringer
+- en kodeprototype eller skisse av løsningen
+- et enkelt arkitekturdiagram og begrunnede teknologivalg
+- forventet nytte for kunden og virksomheten
+- viktige risikoer og hvordan de kan håndteres
 - kort forklaring av datakvalitet, personvern og AI-styring

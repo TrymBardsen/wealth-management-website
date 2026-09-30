@@ -1,10 +1,5 @@
 # ITØK-guide: Hva går workshopen egentlig ut på?
 
-## Problemstilling
-
-I samarbeid med Private Banking ønsker Nordea å utvikle en Wealth Copilot kan gjøre kundens
-økonomi og investeringer enklere å forstå.
-
 ## Kort sagt
 
 Dette er **ikke** først og fremst en programmeringsoppgave. Det er en case-oppgave hvor dere
@@ -19,14 +14,17 @@ Dere kan velge selv hvor teknisk dere vil gå:
 
 Alle nivåer er gyldige. Det viktigste er at dere kan **forklare og begrunne** valgene deres.
 
-## Hva finnes i appen fra før?
+## Hva finnes i demoen fra før?
 
-- **Kunder** med kontoer, transaksjoner og porteføljer (fiktive/syntetiske data)
+- **Kunder** med kontoer, transaksjoner og porteføljer (syntetiske data)
 - **Portefølje-oversikt**: hva kunden eier, fordelt på aktivaklasser
 - **Risikoscore**: en enkel, forklarbar modell (IKKE ekte finansiell rådgivning)
 - **Innsikter**: automatisk genererte observasjoner om kundens økonomi
 - **Wealth Copilot**: en enkel «chatbot» som svarer på spørsmål om kundens egen økonomi —
   i dag er den regelbasert (ikke en ekte AI/LLM)
+
+Tallene og beregningene er laget for en pedagogisk demo. De er ikke ekte kundedata eller
+finansiell rådgivning.
 
 ## Slik henger datamodellene sammen
 
@@ -34,11 +32,10 @@ API-et består av både rådata og beregnede modeller:
 
 - En **kunde** kan ha én eller flere **kontoer**.
 - En konto kan ha mange **transaksjoner**, for eksempel innbetalinger, uttak og overføringer.
-- En **investerings- eller pensjonskonto** kan ha mange **investeringsposisjoner**. Hver
-  posisjon har en `account_id` som viser hvilken konto den tilhører. Kontoverdien beregnes
-  ved å summere posisjonenes markedsverdi (antall × nåværende pris).
-- En investering er kundens konkrete beholdning i et instrument, med antall, kjøpspris og
-  nåværende pris.
+- En **investeringsposisjon** er kundens beholdning i et instrument. Den har blant annet
+  antall, kjøpspris og nåværende pris, og `account_id` viser hvilken investerings- eller
+  pensjonskonto den tilhører. Kontoverdien beregnes ved å summere posisjonenes markedsverdi
+  (antall × nåværende pris).
 - Et **instrument** er selve produktet, for eksempel en aksje, ETF, et fond, en obligasjon
   eller kontanter. Det samme instrumentet kan eies av mange kunder.
 - **Markedsdata** beskriver hvordan prisen på et instrument har utviklet seg over tid.
@@ -49,32 +46,26 @@ Se «Datamodeller i API-et» i `README.md` for feltene som inngår i hver modell
 
 ## Hva skal dere egentlig gjøre?
 
-I `docs/workshop.md` er det det tre reelle problemstillinger og kundecaser som privat banking har i dag.
-Ta utgangspunkt i ett eller fler og finn ut hva kunden trenger å forstå, hvilke data som trengs for å forklare det, og hvordan løsningen kan vise
-forklaringen på en tydelig måte. Dere trenger ikke bygge en full bankløsning.
+Velg én av kundecasene i `docs/workshop.md`. Denne guiden viser hvordan dere kan bidra med
+ITØK-perspektivet, uansett hvor mye kode dere ønsker å skrive.
 
-Mens dere jebbore med problemstillingene kan der underveis prøve å svare på de 8 spørsmålene både fra et IT-perspektiv og forretningsperspektiv:
+Bruk de åtte spørsmålene i workshopoppgaven til å utforske både IT-siden og
+forretningssiden av caset:
 
-| Spørsmål                          | IT-vinkel                                | Økonomi-vinkel                                  |
-| --------------------------------- | ---------------------------------------- | ----------------------------------------------- |
-| Hvilke data trengs?               | Datakilder, format, oppdateringsfrekvens | Hvilke tall er relevante for kundens økonomi?   |
-| Hvordan bør plattformen designes? | Arkitektur, skalering                    | Hvem eier/bruker dataene?                       |
-| Hvordan sikre datakvalitet?       | Validering, feilhåndtering               | Konsekvens av feil tall for kunden              |
-| Sikkerhet og personvern?          | Tilgangsstyring, kryptering              | GDPR, samtykke, bankhemmelighet                 |
-| Hvordan kan AI skape verdi?       | Hvor i systemet passer AI inn?           | Hva bør/bør ikke AI si om kundens penger?       |
-| Sanntidsdata?                     | Events, oppdateringsjobber               | Hvor "fersk" må et tall være for å være nyttig? |
-| Største risikoer?                 | Systemfeil, nedetid                      | Feilinformasjon, tap av tillit                  |
+| Spørsmål | IT-vinkel | Økonomi- og forretningsvinkel |
+| --- | --- | --- |
+| Hvilke data bør samles inn, og hvor kommer de fra? | Datakilder, formater og oppdateringsfrekvens | Hvilke opplysninger trengs for å forstå kundens økonomi? |
+| Hvordan bør dataplattformen designes? | Arkitektur og skalering | Hvem eier dataene, og hvem skal bruke dem? |
+| Hvilke teknologier bør brukes, og hvorfor? | Modenhet, drift og integrasjoner | Kostnader og forventet nytte |
+| Hvordan bør datakvalitet sikres, og hva skjer når data mangler eller er feil? | Validering og feilhåndtering | Hvordan kan feil tall påvirke kunden og beslutningene? |
+| Hvordan bør sikkerhet og personvern håndteres? | Tilgangsstyring og beskyttelse av data | Samtykke, GDPR og tillit |
+| Hvordan kan AI skape verdi, og hva bør AI-en ikke gjøre? | Hvor i løsningen passer AI inn? | Hvordan unngå villedende svar og uønskede investeringsråd? |
+| Hvordan bør sanntidsdata og oppdateringer håndteres? | Hendelser og oppdateringsjobber | Hvor ferske må tallene være for å være nyttige? |
+| Hva er de største risikoene, og hvordan reduseres de? | Systemfeil, nedetid og sikkerhetsbrudd | Feilinformasjon, økonomiske konsekvenser og tap av tillit |
 
-## Om AI/LLM-spørsmålet spesielt
-
-Dere trenger **ikke** koble på en ekte språkmodell (LLM). Det holder å **resonnere seg fram
-til**:
-
-- Hvor i systemet ville en AI passe inn (f.eks. for å forklare tall i tekst)?
-- Hva bør AI-en få lov til (forklare/oppsummere) og **ikke** lov til (finne på tall, gi
-  investeringsråd)?
-- Hvilke risikoer følger med (feilinformasjon, personvern, kostnad, avhengighet av en
-  ekstern leverandør)?
+Det er ikke nødvendig å koble på en ekte språkmodell. Dere kan drøfte hvor AI eventuelt kan
+hjelpe, hvilke data den bør bruke, og hvordan dere kan begrense risikoen for feilinformasjon
+eller uønskede investeringsråd.
 
 ## Hvor finner jeg mer?
 
