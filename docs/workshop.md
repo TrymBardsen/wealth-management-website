@@ -2,13 +2,12 @@
 
 ## Utfordringen
 
-I samarbeid med Private Banking skal dere utforske hvordan Wealth Copilot kan gjøre kundens
-økonomi og investeringer enklere å forstå. Velg ett av de tre problemområdene under, og
-design en løsning som gir kunden forklaringer og innsikt hun eller han kan stole på.
+I samarbeid med Private Banking ønsker Nordea å utvikle en Wealth Copilot som skal gjøre kundens
+økonomi og investeringer enklere å forstå.
 
 Ta utgangspunkt i den fungerende demoen i dette repoet. Deltakere kan utforske API-et, utvide
 frontend, endre de syntetiske dataene og bruke instruksjonene i `/prompts` sammen med GitHub
-Copilot CLI.
+Copilot CLI/claud code eller liknende.
 
 ## Velg ett problemområde
 
@@ -43,8 +42,7 @@ målet, og om hun ligger foran eller bak planen.
 
 Alle tre problemområdene er like gyldige. Velg det som interesserer gruppa mest. Vær tydelige
 på hvilke data og beregninger demoen allerede har, hva dere eventuelt må legge til, og hvilke
-antakelser forklaringen bygger på. Særlig en prognose for Marias mål må presenteres som et
-usikkert scenario, ikke som et løfte eller en garanti.
+antakelser forklaringen bygger på.
 
 ## 8 spørsmål å svare på
 
@@ -66,8 +64,7 @@ med både en IT-vinkel og en økonomi-vinkel for hvert av dem.
 
 Kjør applikasjonen, bytt mellom de fiktive kundene og se på API-svarene bak Dashboard,
 Portefølje, Innsikter og Wealth Copilot. Prøv å svare på: Hvilke data ligger bak hver
-skjerm, og hvor "ferske" er de? Se også etter hva demoen ikke kan svare på i det valgte
-problemområdet.
+skjerm og tall. Se også etter hva demoen ikke kan svare på i det valgte problemområdet.
 
 ### 2. Velg et kundeproblem
 
@@ -132,9 +129,3 @@ arkitektur.
 - forretningsverdi
 - risikoer og utfordringer
 - kort forklaring av datakvalitet, personvern og AI-styring
-
-## Definisjon av ferdig
-
-Prototypen skal fungere for minst én fiktiv kunde, vise hvor dataene kommer fra, synlig
-håndtere manglende eller utdaterte data, og aldri fremstille den pedagogiske risikoscoren som
-reell finansiell rådgivning.

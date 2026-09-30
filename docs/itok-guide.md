@@ -2,10 +2,8 @@
 
 ## Problemstilling
 
-I samarbeid med Private Banking utforsker dere hvordan Wealth Copilot kan gjøre kundens
-økonomi og investeringer enklere å forstå. I `docs/workshop.md` velger gruppa ett av tre
-problemområder: forklare porteføljeutvikling, synliggjøre investeringsrisiko eller følge
-utviklingen mot et økonomisk mål.
+I samarbeid med Private Banking ønsker Nordea å utvikle en Wealth Copilot kan gjøre kundens
+økonomi og investeringer enklere å forstå.
 
 ## Kort sagt
 
@@ -82,16 +80,6 @@ til**:
   ekstern leverandør)?
 
 Dette er nok til å svare godt på spørsmål 6 i `docs/workshop.md`.
-
-## Hva teller som en god leveranse?
-
-Ikke mengden kode. Se `docs/workshop.md` under "Leveranser" og "Definisjon av ferdig" —
-kort oppsummert:
-
-1. Dere kan vise/forklare **ett** kundeproblem dere har jobbet med
-2. Dere kan forklare hvor dataene kommer fra og hvor "ferske" de er
-3. Dere har tenkt gjennom personvern og risiko
-4. Dere har vært tydelige på at risikoscore og "AI-svar" ikke er ekte finansiell rådgivning
 
 ## Hvor finner jeg mer?
 
