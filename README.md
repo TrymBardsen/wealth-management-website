@@ -5,7 +5,7 @@ kapital- og formuesforvaltning.
 
 Repoet inneholder et fiktivt bankmiljø med:
 
-- 500 syntetiske kunder
+- 100 syntetiske kunder
 - kontoer, transaksjoner, investeringer og historiske markedsdata
 - et TypeScript/Express REST API med beregnet portefølje, risiko og innsikt
 - en React/Vite-frontend med visningene Dashboard, Portefølje, Innsikter og Wealth Copilot
@@ -64,7 +64,7 @@ frontend/
     components/         layout, diagrammer og gjenbrukbare kort
     pages/              dashboard, portefølje, innsikter og Copilot
 docs/
-  workshop.md           oppgave, spørsmål, arbeidssteg og leveranser for deltakerne
+  workshop.md           kundecaser, refleksjoner, arbeidssteg og leveranser
   itok-guide.md         ikke-teknisk guide til hva workshopen forventer
 prompts/
   *.md                  eksempler på GitHub Copilot CLI-prompter

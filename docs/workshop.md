@@ -13,8 +13,8 @@ CLI, Claude Code eller lignende verktøy.
 
 Under er tre problemstillinger med kundecaser fra Private Banking. Velg ett spor og undersøk
 hva kunden trenger å forstå, hvilke data som trengs, og hvordan løsningen kan hjelpe. Dere
-trenger ikke bygge en full bankløsning. Bruk de åtte spørsmålene som støtte mens dere jobber
-med caset, og legg mest vekt på spørsmålene som er relevante for det dere velger.
+trenger ikke bygge en full bankløsning. Bruk refleksjonene under som støtte, og legg mest vekt
+på det som er relevant for caset dere velger.
 
 ### A. Forstå hvorfor porteføljen utvikler seg
 
@@ -62,19 +62,17 @@ Alle tre problemområdene er like gyldige. Vær tydelige på hvilke data og bere
 allerede har, hva dere eventuelt må legge til, og hvilke antakelser forklaringen bygger på.
 Prognoser må presenteres som usikre scenarioer, ikke som løfter eller garantier.
 
-## 8 spørsmål å svare på
+## Refleksjoner underveis
 
-1. Hvilke data bør samles inn, og hvor kommer de fra?
-2. Hvordan bør dataplattformen designes?
-3. Hvilke teknologier bør brukes, og hvorfor akkurat disse?
-4. Hvordan bør datakvalitet sikres, og hva skjer når data mangler eller er feil?
-5. Hvordan bør sikkerhet og personvern håndteres?
-6. Hvordan kan AI skape verdi, og hva bør AI-en aldri få lov til å gjøre?
-7. Hvordan bør sanntidsdata og oppdateringer håndteres?
-8. Hva er de største risikoene, og hvordan reduserer dere dem?
+Bruk disse refleksjonene som støtte mens dere jobber med den valgte kundecasen. Dere trenger
+ikke skrive egne svar på hvert punkt.
 
-Spørsmålene er ment som støtte for diskusjonen. Dere trenger ikke besvare alle like grundig;
-prioriter dem som er viktigst for problemområdet dere har valgt.
+- **Kundebehov:** Hva prøver kunden å forstå, og hvordan skal løsningen hjelpe?
+- **Data:** Hvilke data trengs? Hva finnes allerede i demoen, og hva mangler?
+- **Forklaring og tillit:** Hvordan viser løsningen grunnlaget, antakelsene og eventuell
+  usikkerhet på en forståelig måte?
+- **Nytte og risiko:** Hvordan kan dere undersøke om løsningen er nyttig, også når data
+  mangler, er utdaterte eller kan misforstås?
 
 ## Foreslåtte arbeidssteg
 
@@ -87,13 +85,14 @@ tallene, og hva demoen ikke kan svare på i det valgte problemområdet.
 ### 2. Avgrens kundeproblemet
 
 Beskriv hva kunden prøver å forstå, hvilken informasjon kunden trenger, og hvordan dere kan
-se om løsningen faktisk hjelper.
+se om løsningen faktisk hjelper. Formuler gjerne hva kunden skal kunne forstå etter å ha
+brukt funksjonen.
 
-### 3. Design dataflyten
+### 3. Finn dataene dere trenger
 
-Identifiser kildedata, krav til ferskhet, kvalitetsregler, behov for identitet/samtykke og
-hvilket API eller hvilken hendelse som støtter opplevelsen. Skisser gjerne dette som et enkelt
-arkitekturdiagram (bokser og piler holder fint).
+Finn ut hvilke data funksjonen trenger, hvor de kommer fra, og hva som eventuelt mangler.
+Vurder også om dataene er oppdaterte og pålitelige. Hvis det hjelper gruppa, kan dere vise
+dataflyten med en enkel skisse eller et diagram.
 
 ### 4. Lag en løsning
 
@@ -105,12 +104,13 @@ gjøre, hvilke data det bruker, og hvilke begrensninger det skal ha.
 ### 5. Evaluer løsningen
 
 Test eller gå gjennom løsningen med vanlige tilfeller og minst ett tilfelle der data mangler,
-er utdatert eller kan misforstås. Forklar hvordan løsningen håndterer usikkerhet og feil.
+er utdatert eller kan misforstås. Vurder både om løsningen håndterer usikkerhet og feil, og om
+kunden forstår forklaringen den gir.
 
 ### 6. Utfordre løsningen med et nytt scenario (valgfritt)
 
 Velg ett av scenarioene under og diskuter hvordan løsningen deres bør endres. Dere trenger
-ikke bygge scenarioet; bruk det som en valgfri stresstest av ideen.
+ikke bygge scenarioet. Ta det bare hvis dere har tid, som en ekstra stresstest av ideen.
 
 - **Eksterne investeringer:** Kunden har investeringer hos en annen finansinstitusjon.
   Hvordan håndterer dere samtykke, ferskhet på data, kobling av instrumenter, bekreftelse av
@@ -124,7 +124,7 @@ ikke bygge scenarioet; bruk det som en valgfri stresstest av ideen.
 - **Feil AI-innsikt:** AI-en gir kunden en feilaktig investeringsrelatert innsikt. Hvordan
   oppdager, forklarer og retter dere dette, og hvem bør varsles?
 
-### 7. Designoppgave (valgfri): gi appen en Nordea-inspirert stil
+### 7. Designoppgave (valgfritt hvis dere har tid): gi appen en Nordea-inspirert stil
 
 Gjør frontend mer visuelt lik en typisk nettbank, inspirert av en mørk og kraftig blåfarge,
 ren nordisk stil og en tydelig topplinje/topptekst.
@@ -141,8 +141,10 @@ arkitektur.
 
 ## Leveranser
 
-- en kodeprototype eller skisse av løsningen
-- et enkelt arkitekturdiagram og begrunnede teknologivalg
-- forventet nytte for kunden og virksomheten
-- viktige risikoer og hvordan de kan håndteres
-- kort forklaring av datakvalitet, personvern og AI-styring
+- en kodeprototype eller skisse av én funksjon for den valgte kundecasen
+- en kort forklaring av hvilke data funksjonen bruker, hva som mangler, og hvilke antakelser
+  den bygger på
+- en kort vurdering av forventet nytte for kunden, og hvordan dere ville undersøkt om
+  løsningen hjelper
+- én eller flere viktige risikoer dere har tatt hensyn til, for eksempel feil data,
+  personvern eller at kunden kan misforstå resultatet

@@ -46,29 +46,22 @@ Se «Datamodeller i API-et» i `README.md` for feltene som inngår i hver modell
 
 ## Hva skal dere egentlig gjøre?
 
-Velg én av kundecasene i `docs/workshop.md`. Denne guiden viser hvordan dere kan bidra med
-ITØK-perspektivet, uansett hvor mye kode dere ønsker å skrive.
+Velg én av kundecasene i `docs/workshop.md`. Der finner dere oppgaven og fire korte
+refleksjoner som hjelper dere med å se kundebehov, data, forklaring og nytte.
 
-Bruk de åtte spørsmålene i workshopoppgaven til å utforske både IT-siden og
-forretningssiden av caset:
+Du trenger ikke kode for å bidra. Du kan for eksempel:
 
-| Spørsmål | IT-vinkel | Økonomi- og forretningsvinkel |
-| --- | --- | --- |
-| Hvilke data bør samles inn, og hvor kommer de fra? | Datakilder, formater og oppdateringsfrekvens | Hvilke opplysninger trengs for å forstå kundens økonomi? |
-| Hvordan bør dataplattformen designes? | Arkitektur og skalering | Hvem eier dataene, og hvem skal bruke dem? |
-| Hvilke teknologier bør brukes, og hvorfor? | Modenhet, drift og integrasjoner | Kostnader og forventet nytte |
-| Hvordan bør datakvalitet sikres, og hva skjer når data mangler eller er feil? | Validering og feilhåndtering | Hvordan kan feil tall påvirke kunden og beslutningene? |
-| Hvordan bør sikkerhet og personvern håndteres? | Tilgangsstyring og beskyttelse av data | Samtykke, GDPR og tillit |
-| Hvordan kan AI skape verdi, og hva bør AI-en ikke gjøre? | Hvor i løsningen passer AI inn? | Hvordan unngå villedende svar og uønskede investeringsråd? |
-| Hvordan bør sanntidsdata og oppdateringer håndteres? | Hendelser og oppdateringsjobber | Hvor ferske må tallene være for å være nyttige? |
-| Hva er de største risikoene, og hvordan reduseres de? | Systemfeil, nedetid og sikkerhetsbrudd | Feilinformasjon, økonomiske konsekvenser og tap av tillit |
+- beskrive hvilket kundeproblem løsningen skal løse, og hvilken nytte den kan gi
+- vurdere hvilke data som trengs, og om de er relevante og til å stole på
+- drøfte hvordan kunden kan forstå forklaringen og eventuell usikkerhet
+- skissere en brukerflyt eller en enkel dataflyt
 
-Det er ikke nødvendig å koble på en ekte språkmodell. Dere kan drøfte hvor AI eventuelt kan
-hjelpe, hvilke data den bør bruke, og hvordan dere kan begrense risikoen for feilinformasjon
-eller uønskede investeringsråd.
+Det er heller ikke nødvendig å koble på en ekte språkmodell. Dere kan diskutere hvor AI
+eventuelt kan hjelpe, og hvordan risikoen for feilinformasjon eller uønskede investeringsråd
+kan begrenses.
 
 ## Hvor finner jeg mer?
 
 - `README.md` — hvordan kjøre appen og hvordan datamodellene henger sammen
-- `docs/workshop.md` — selve oppgaveteksten, de 8 spørsmålene og arbeidsstegene
+- `docs/workshop.md` — kundecaser, refleksjoner, arbeidssteg og leveranser
 - `prompts/` — ferdige prompts for å utforske/endre koden med GitHub Copilot CLI
