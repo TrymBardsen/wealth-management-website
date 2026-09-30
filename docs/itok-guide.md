@@ -49,12 +49,11 @@ Se «Datamodeller i API-et» i `README.md` for feltene som inngår i hver modell
 
 ## Hva skal dere egentlig gjøre?
 
-Velg ett av de tre Private Banking-problemområdene i `docs/workshop.md`. Finn ut hva kunden
-trenger å forstå, hvilke data som trengs for å forklare det, og hvordan løsningen kan vise
+I `docs/workshop.md` er det det tre reelle problemstillinger og kundecaser som privat banking har i dag.
+Ta utgangspunkt i ett eller fler og finn ut hva kunden trenger å forstå, hvilke data som trengs for å forklare det, og hvordan løsningen kan vise
 forklaringen på en tydelig måte. Dere trenger ikke bygge en full bankløsning.
 
-De 8 spørsmålene i `docs/workshop.md` hjelper dere med å tenke gjennom både IT-delen og
-økonomi-delen:
+Mens dere jebbore med problemstillingene kan der underveis prøve å svare på de 8 spørsmålene både fra et IT-perspektiv og forretningsperspektiv:
 
 | Spørsmål                          | IT-vinkel                                | Økonomi-vinkel                                  |
 | --------------------------------- | ---------------------------------------- | ----------------------------------------------- |

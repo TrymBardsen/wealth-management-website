@@ -11,6 +11,10 @@ Copilot CLI/claud code eller liknende.
 
 ## Velg ett problemområde
 
+Under er det beskrevet tre reelle problemstillinger og kundecaser som privat banking har i dag.
+Ta utgangspunkt i ett eller fler og finn ut hva kunden trenger å forstå, hvilke data som trengs for å forklare det, og hvordan løsningen kan hjelpe
+kunden på en god måte. Dere trenger ikke bygge en full bankløsning. Svar så godt dere kan på de 8 spørsmålene mens dere jobber med kundecaset.
+
 ### A. Forstå hvorfor porteføljen utvikler seg
 
 **Problemstilling:** Hvordan kan Wealth Copilot forklare porteføljeutviklingen gjennom
@@ -55,9 +59,6 @@ antakelser forklaringen bygger på.
 7. Hvordan bør sanntidsdata og oppdateringer håndteres?
 8. Hva er de største risikoene, og hvordan reduserer dere dem?
 
-Se `docs/itok-guide.md` for en enklere, ikke-teknisk gjennomgang av disse 8 spørsmålene,
-med både en IT-vinkel og en økonomi-vinkel for hvert av dem.
-
 ## Foreslåtte arbeidssteg
 
 ### 1. Forstå utgangspunktet
@@ -79,8 +80,8 @@ arkitekturdiagram (bokser og piler holder fint).
 
 ### 4. Lag en prototype
 
-Bruk de eksisterende API- og UI-mønstrene. Hold beregningene deterministiske og forklarbare.
-Hvis dere legger til et AI-lag, definer nøyaktig hva modellen har lov til og ikke lov til.
+Bruk de eksisterende API- og UI-mønstrene. Prøv å legg til en feature som løser kundeproblemet ved hjelp av vibecoding eller tegning.
+Hold beregningene deterministiske og forklarbare. Hvis dere legger til et AI-lag, definer nøyaktig hva modellen har lov til og ikke lov til.
 
 ### 5. Utfordre løsningen med et nytt scenario
 
@@ -90,7 +91,7 @@ ikke bygge alt - poenget er å vise at dere har tenkt gjennom konsekvensene.
 - **Eksterne investeringer:** Kunden har investeringer hos en annen finansinstitusjon.
   Hvordan håndterer dere samtykke, ferskhet på data, kobling av instrumenter, bekreftelse av
   eierskap og manglende kostpris? Hva sier Copilot når eksterne data er ufullstendige?
-- **Kjøp skal vises umiddelbart:** Kunden kjøper et aktivum og forventer at Wealth Copilot
+- **Kjøp skal vises umiddelbart:** Kunden kjøper et aktiva og forventer at Wealth Copilot
   reflekterer endringen med en gang. Hvordan håndterer dere ventende versus oppgjorte
   posisjoner, prisens ferskhet og foreløpige verdier i grensesnittet?
 - **Åpenhet om personopplysninger:** Kunden ber om å få vist nøyaktig hvilke
@@ -99,12 +100,7 @@ ikke bygge alt - poenget er å vise at dere har tenkt gjennom konsekvensene.
 - **Feil AI-innsikt:** AI-en gir kunden en feilaktig investeringsrelatert innsikt. Hvordan
   oppdager, forklarer og retter dere dette, og hvem bør varsles?
 
-### 6. Evaluer
-
-Test normale tilfeller og kanttilfeller, se på dataopprinnelse, utfordre antakelser og
-forklar hvordan feil håndteres.
-
-### 7. Designoppgave (valgfri): gi appen en Nordea-inspirert stil
+### 6. Designoppgave (valgfri): gi appen en Nordea-inspirert stil
 
 Gjør frontend mer visuelt lik en typisk nettbank, inspirert av en mørk og kraftig blåfarge,
 ren nordisk stil og en tydelig topplinje/topptekst.
@@ -115,8 +111,6 @@ Ting å vurdere:
 - Legg til en enkel logo eller tekstlogo (for eksempel «Wealth Copilot») i toppteksten
 - Vurder skrifttype, avrundede hjørner/kort-design og luftig layout, slik man ofte ser i
   nettbankapplikasjoner
-- Sørg for at det fortsatt er tydelig, f.eks. i footer, at dette er en **fiktiv, syntetisk
-  demo**
 
 Dette er en god oppgave for dem i gruppa som vil jobbe mer med frontend/UI enn med data og
 arkitektur.

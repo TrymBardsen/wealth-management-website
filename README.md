@@ -171,8 +171,3 @@ HTTPS-adressen og distribuerer frontend på nytt.
 - Copilot-svarene er deterministiske og kaller ikke en ekstern modell.
 - Autentisering, tilgangsstyring, samtykkehåndtering og observability på produksjonsnivå er
   dokumenterte designtemaer, men er ikke implementert her.
-
-Se `docs/workshop.md` for anbefalte neste steg.
-
-Er du usikker på hva workshopen faktisk forventer, spesielt hvis du ikke skal kode selv?
-Se `docs/itok-guide.md`.
