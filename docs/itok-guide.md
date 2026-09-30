@@ -45,8 +45,6 @@ API-et består av både rådata og beregnede modeller:
 - API-et bruker disse dataene til å beregne en **porteføljeoversikt**, en illustrativ
   **risikoscore** og regelbaserte **innsikter**.
 
-Dette forklarer også hvorfor `/instruments` og `/holdings` ikke har samme antall rader:
-instrumenter er unike produkter, mens holdings/beholdninger er kundespesifikke posisjoner.
 Se «Datamodeller i API-et» i `README.md` for feltene som inngår i hver modell.
 
 ## Hva skal dere egentlig gjøre?
@@ -55,8 +53,8 @@ Velg ett av de tre Private Banking-problemområdene i `docs/workshop.md`. Finn u
 trenger å forstå, hvilke data som trengs for å forklare det, og hvordan løsningen kan vise
 forklaringen på en tydelig måte. Dere trenger ikke bygge en full bankløsning.
 
-De 8 spørsmålene i `docs/workshop.md` hjelper dere med å tenke gjennom både IT-siden og
-økonomi-siden:
+De 8 spørsmålene i `docs/workshop.md` hjelper dere med å tenke gjennom både IT-delen og
+økonomi-delen:
 
 | Spørsmål                          | IT-vinkel                                | Økonomi-vinkel                                  |
 | --------------------------------- | ---------------------------------------- | ----------------------------------------------- |
@@ -78,8 +76,6 @@ til**:
   investeringsråd)?
 - Hvilke risikoer følger med (feilinformasjon, personvern, kostnad, avhengighet av en
   ekstern leverandør)?
-
-Dette er nok til å svare godt på spørsmål 6 i `docs/workshop.md`.
 
 ## Hvor finner jeg mer?
 
