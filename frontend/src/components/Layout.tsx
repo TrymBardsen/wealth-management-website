@@ -44,7 +44,8 @@ export default function Layout() {
         <nav className="app-nav">
           <NavLink to="/" end>Dashboard</NavLink>
           <NavLink to="/portfolio">Portfolio</NavLink>
-          <NavLink to="/insights">Insights</NavLink>
+          <NavLink to="/risk">Risk</NavLink>
+          <NavLink to="/reports">Reports</NavLink>
           <NavLink to="/copilot">Wealth Copilot</NavLink>
         </nav>
         <CustomerSelector />

@@ -89,12 +89,23 @@ export interface PerformancePoint {
   value: number
 }
 
+export interface BenchmarkComparison {
+  ticker: string
+  name: string
+  source: string
+  fetched_at: string
+  series: PerformancePoint[]
+  period_return_pct: number
+  disclaimer: string
+}
+
 export interface PerformanceSummary {
   customer_id: string
   series: PerformancePoint[]
   period_return_pct: number
   start_value: number
   end_value: number
+  benchmark: BenchmarkComparison | null
 }
 
 export interface RiskSummary {
@@ -109,6 +120,57 @@ export interface RiskSummary {
   }
   customer_risk_profile: string
   risk_profile_alignment: string
+  disclaimer: string
+}
+
+export interface RiskHistory {
+  customer_id: string
+  series: Array<{ date: string; risk_score: number; risk_category: RiskSummary['risk_category'] }>
+  start_sector_weights: Array<{ label: string; percentage: number }>
+  end_sector_weights: Array<{ label: string; percentage: number }>
+  biggest_sector_shift: { label: string; from_pct: number; to_pct: number } | null
+  note: string
+}
+
+export interface RiskContribution {
+  investment_id: string
+  ticker: string
+  name: string
+  asset_type: string
+  sector: string
+  value_pct: number
+  daily_volatility_pct: number
+  swing_share_pct: number
+}
+
+export interface RiskContributions {
+  customer_id: string
+  holdings: RiskContribution[]
+  method: string
+}
+
+export interface RiskScoreSnapshot {
+  risk_score: number
+  risk_category: RiskSummary['risk_category']
+  factors: RiskSummary['factors']
+  alignment: string
+}
+
+export interface ImprovementIdea {
+  id: string
+  title: string
+  why: string
+  what_if: string
+  trade_off: string
+  amount_moved: number
+  before: RiskScoreSnapshot
+  after: RiskScoreSnapshot
+}
+
+export interface ImprovementsSummary {
+  customer_id: string
+  ideas: ImprovementIdea[]
+  assumptions: string[]
   disclaimer: string
 }
 
@@ -133,4 +195,32 @@ export interface InsightsSummary {
 export interface CopilotReply {
   answer: string
   matched_intent: string
+}
+
+export interface ReportType {
+  id: string
+  title: string
+  description: string
+}
+
+export interface ReportTypesResponse {
+  ai_enabled: boolean
+  max_question_length: number
+  report_types: ReportType[]
+}
+
+export interface Report {
+  customer_id: string
+  report_type: string | null
+  question: string
+  title: string
+  answers_question: boolean
+  summary: string
+  key_figures: Array<{ label: string; value: string; source: string; verified: boolean }>
+  sections: Array<{ heading: string; paragraphs: string[] }>
+  limitations: string[]
+  generated_by: { kind: 'ai' | 'template'; model?: string; note?: string }
+  data_as_of: string
+  data_period: { start: string; end: string }
+  disclaimer: string
 }

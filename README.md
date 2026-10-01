@@ -8,7 +8,7 @@ Repoet inneholder et fiktivt bankmiljø med:
 - 100 syntetiske kunder
 - kontoer, transaksjoner, investeringer og historiske markedsdata
 - et TypeScript/Express REST API med beregnet portefølje, risiko og innsikt
-- en React/Vite-frontend med visningene Dashboard, Portefølje, Innsikter og Wealth Copilot
+- en React/Vite-frontend med visningene Dashboard, Portefølje, Risiko og Wealth Copilot
 - deterministiske og forklarbare Copilot-svar uten behov for ekstern AI-nøkkel
 - workshopoppgave og deltakerveiledning
 - utrulling av frontend til GitHub Pages og en Render-konfigurasjon for API-et
@@ -62,7 +62,7 @@ frontend/
   src/
     api/                typesikker API-klient og kontrakter
     components/         layout, diagrammer og gjenbrukbare kort
-    pages/              dashboard, portefølje, innsikter og Copilot
+    pages/              dashboard, portefølje, risiko og Copilot
 docs/
   workshop.md           kundecaser, refleksjoner, arbeidssteg og leveranser
   itok-guide.md         ikke-teknisk guide til hva workshopen forventer
@@ -89,7 +89,10 @@ GET  /customers/:customerId/investments
 GET  /customers/:customerId/portfolio
 GET  /customers/:customerId/performance
 GET  /customers/:customerId/risk
+GET  /customers/:customerId/risk/history
+GET  /customers/:customerId/risk/contributions
 GET  /customers/:customerId/insights
+GET  /customers/:customerId/improvements
 POST /customers/:customerId/copilot
 ```
 

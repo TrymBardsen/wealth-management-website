@@ -242,6 +242,45 @@ paths:
         "404":
           $ref: "#/components/responses/NotFound"
 
+  /customers/{customerId}/risk/history:
+    parameters:
+      - $ref: "#/components/parameters/CustomerId"
+    get:
+      tags: [Customers]
+      summary: Get the demo risk score for every day in the price history
+      description: >
+        Replays today's holding quantities against historical prices and
+        re-scores the portfolio each day, so changes come only from price
+        movements (e.g. a sector that rises grows into a bigger share).
+      responses:
+        "200":
+          description: Risk score history
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RiskHistory"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /customers/{customerId}/risk/contributions:
+    parameters:
+      - $ref: "#/components/parameters/CustomerId"
+    get:
+      tags: [Customers]
+      summary: Get each holding's share of value vs. share of the portfolio's swings
+      description: >
+        Share of swings = value weight x the holding's own daily volatility,
+        scaled to 100%. Ignores correlation between holdings.
+      responses:
+        "200":
+          description: Risk contributions per holding
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RiskContributions"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
   /customers/{customerId}/insights:
     parameters:
       - $ref: "#/components/parameters/CustomerId"
@@ -255,6 +294,28 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InsightsSummary"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /customers/{customerId}/improvements:
+    parameters:
+      - $ref: "#/components/parameters/CustomerId"
+    get:
+      tags: [Customers]
+      summary: Get rule-based what-if ideas for improving the risk balance
+      description: >
+        Each idea describes one simple hypothetical change (e.g. moving part of
+        the portfolio into a generic broad fund) and re-scores the portfolio
+        with the same demo risk model, returning the score before and after.
+        Educational simulations only - NOT investment advice, and no specific
+        products are suggested.
+      responses:
+        "200":
+          description: Improvement ideas
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImprovementsSummary"
         "404":
           $ref: "#/components/responses/NotFound"
 
@@ -548,6 +609,176 @@ components:
           type: number
         end_value:
           type: number
+        benchmark:
+          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/BenchmarkComparison"
+
+    BenchmarkComparison:
+      type: object
+      description: >
+        Real Oslo Børs Benchmark Index (OSEBX) closing levels from a Yahoo
+        Finance snapshot, rebased so that it starts at the portfolio's start
+        value. Non-trading days reuse the previous close.
+      properties:
+        ticker:
+          type: string
+          example: OSEBX
+        name:
+          type: string
+        source:
+          type: string
+          example: Yahoo Finance (OSEBX.OL)
+        fetched_at:
+          type: string
+          format: date-time
+        series:
+          type: array
+          items:
+            $ref: "#/components/schemas/PerformancePoint"
+        period_return_pct:
+          type: number
+        disclaimer:
+          type: string
+
+    RiskHistory:
+      type: object
+      properties:
+        customer_id:
+          type: string
+        series:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+              risk_score:
+                type: number
+              risk_category:
+                type: string
+                enum: [Low, Medium, High]
+        start_sector_weights:
+          type: array
+          items:
+            $ref: "#/components/schemas/SectorWeight"
+        end_sector_weights:
+          type: array
+          items:
+            $ref: "#/components/schemas/SectorWeight"
+        biggest_sector_shift:
+          type: object
+          nullable: true
+          properties:
+            label:
+              type: string
+            from_pct:
+              type: number
+            to_pct:
+              type: number
+        note:
+          type: string
+
+    SectorWeight:
+      type: object
+      properties:
+        label:
+          type: string
+        percentage:
+          type: number
+
+    RiskContributions:
+      type: object
+      properties:
+        customer_id:
+          type: string
+        holdings:
+          type: array
+          items:
+            type: object
+            properties:
+              investment_id:
+                type: string
+              ticker:
+                type: string
+              name:
+                type: string
+              asset_type:
+                type: string
+              sector:
+                type: string
+              value_pct:
+                type: number
+              daily_volatility_pct:
+                type: number
+              swing_share_pct:
+                type: number
+        method:
+          type: string
+
+    RiskScoreSnapshot:
+      type: object
+      properties:
+        risk_score:
+          type: number
+        risk_category:
+          type: string
+          enum: [Low, Medium, High]
+        factors:
+          type: object
+          properties:
+            asset_allocation_score:
+              type: number
+            concentration_score:
+              type: number
+            geography_score:
+              type: number
+            volatility_score:
+              type: number
+        alignment:
+          type: string
+          enum: [Aligned, More conservative than profile, More aggressive than profile]
+
+    ImprovementIdea:
+      type: object
+      properties:
+        id:
+          type: string
+          enum: [align-with-profile, trim-largest-holding, reduce-sector-concentration, reduce-geography-concentration]
+        title:
+          type: string
+        why:
+          type: string
+          description: What in the portfolio triggered the idea.
+        what_if:
+          type: string
+          description: The hypothetical change that was simulated.
+        trade_off:
+          type: string
+        amount_moved:
+          type: number
+          description: NOK moved in the simulation.
+        before:
+          $ref: "#/components/schemas/RiskScoreSnapshot"
+        after:
+          $ref: "#/components/schemas/RiskScoreSnapshot"
+
+    ImprovementsSummary:
+      type: object
+      properties:
+        customer_id:
+          type: string
+        ideas:
+          type: array
+          items:
+            $ref: "#/components/schemas/ImprovementIdea"
+        assumptions:
+          type: array
+          items:
+            type: string
+        disclaimer:
+          type: string
 
     RiskSummary:
       type: object

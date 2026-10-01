@@ -7,10 +7,15 @@ import type {
   Account,
   Customer,
   CopilotReply,
+  ImprovementsSummary,
   InsightsSummary,
   Investment,
   PerformanceSummary,
   PortfolioSummary,
+  Report,
+  ReportTypesResponse,
+  RiskContributions,
+  RiskHistory,
   RiskSummary,
   Transaction,
 } from './types'
@@ -61,8 +66,40 @@ export async function fetchRisk(customerId: string): Promise<RiskSummary> {
   return getJson(`/customers/${customerId}/risk`)
 }
 
+export async function fetchRiskHistory(customerId: string): Promise<RiskHistory> {
+  return getJson(`/customers/${customerId}/risk/history`)
+}
+
+export async function fetchRiskContributions(customerId: string): Promise<RiskContributions> {
+  return getJson(`/customers/${customerId}/risk/contributions`)
+}
+
 export async function fetchInsights(customerId: string): Promise<InsightsSummary> {
   return getJson(`/customers/${customerId}/insights`)
+}
+
+export async function fetchImprovements(customerId: string): Promise<ImprovementsSummary> {
+  return getJson(`/customers/${customerId}/improvements`)
+}
+
+export async function fetchReportTypes(): Promise<ReportTypesResponse> {
+  return getJson('/report-types')
+}
+
+export async function createReport(
+  customerId: string,
+  body: { report_type: string } | { question: string },
+): Promise<Report> {
+  const response = await fetch(`${API_URL}/customers/${customerId}/reports`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+  if (!response.ok) {
+    const error = (await response.json().catch(() => null)) as { error?: string } | null
+    throw new Error(error?.error ?? `Report request failed with status ${response.status}`)
+  }
+  return (await response.json()) as Report
 }
 
 export async function askCopilot(customerId: string, message: string): Promise<CopilotReply> {

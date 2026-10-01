@@ -57,6 +57,16 @@ export interface MarketDataPoint {
   geography: string
 }
 
+// Real index snapshot fetched by data/fetch-benchmark.mjs (not synthetic).
+export interface BenchmarkData {
+  ticker: string
+  name: string
+  currency: string
+  source: string
+  fetched_at: string
+  series: Array<{ date: string; value: number }>
+}
+
 export interface Instrument {
   ticker: string
   name: string

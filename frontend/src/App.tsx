@@ -1,8 +1,9 @@
-import { HashRouter, Route, Routes } from 'react-router-dom'
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import Dashboard from './pages/Dashboard'
 import Portfolio from './pages/Portfolio'
-import Insights from './pages/Insights'
+import Risk from './pages/Risk'
+import Reports from './pages/Reports'
 import Copilot from './pages/Copilot'
 import { CustomerProvider } from './context/CustomerContext'
 
@@ -17,7 +18,10 @@ export default function App() {
           <Route element={<Layout />}>
             <Route index element={<Dashboard />} />
             <Route path="portfolio" element={<Portfolio />} />
-            <Route path="insights" element={<Insights />} />
+            <Route path="risk" element={<Risk />} />
+            <Route path="reports" element={<Reports />} />
+            {/* Insights now live on the Risk page; keep old links working. */}
+            <Route path="insights" element={<Navigate to="/risk" replace />} />
             <Route path="copilot" element={<Copilot />} />
           </Route>
         </Routes>

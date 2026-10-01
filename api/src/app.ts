@@ -4,10 +4,18 @@ import express from 'express'
 import cors from 'cors'
 import swaggerUi from 'swagger-ui-express'
 import { customersRouter } from './routes/customers.js'
+import { createReportsRouter } from './routes/reports.js'
+import { createDefaultReportGenerator } from './services/reportAi.js'
+import type { ReportGenerator } from './services/reports.js'
 import { getAllHoldings, getAllInstruments } from './data.js'
 import { loadOpenApiSpec } from './docs.js'
 
-export function createApp() {
+export interface AppOptions {
+  // Defaults to Claude when ANTHROPIC_API_KEY is set, otherwise templates.
+  reportGenerator?: ReportGenerator
+}
+
+export function createApp(options: AppOptions = {}) {
   const app = express()
   app.use(cors())
   app.use(express.json())
@@ -23,6 +31,7 @@ export function createApp() {
   })
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiSpec))
 
+  app.use(createReportsRouter(options.reportGenerator ?? createDefaultReportGenerator()))
   app.use('/customers', customersRouter)
 
   // Top-level discovery endpoints for workshop participants.

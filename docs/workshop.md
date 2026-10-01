@@ -82,7 +82,7 @@ ikke skrive egne svar på hvert punkt.
 ### 1. Forstå utgangspunktet
 
 Kjør applikasjonen, bytt mellom de fiktive kundene og se på API-svarene bak Dashboard,
-Portefølje, Innsikter og Wealth Copilot. Undersøk hvilke data som ligger bak visningene og
+Portefølje, Risiko og Wealth Copilot. Undersøk hvilke data som ligger bak visningene og
 tallene, og hva demoen ikke kan svare på i det valgte problemområdet.
 
 ### 2. Avgrens kundeproblemet

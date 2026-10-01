@@ -119,6 +119,38 @@ for (const customer of customers) {
 // One year of daily prices per instrument, generated as a bounded random
 // walk so portfolio performance calculations have something meaningful to
 // show. Purely synthetic - not derived from any real market feed.
+//
+// How far an instrument can move in a day (in %) depends on what it is, so
+// that e.g. a tech stock swings more than a broad index fund. Daily returns
+// are drawn uniformly from [-swing, +swing * 2.3/2.2], keeping the original
+// slight upward drift.
+const SECTOR_DAILY_SWING = {
+  Technology: 3.2,
+  Energy: 2.8,
+  'Consumer Discretionary': 2.5,
+  Materials: 2.3,
+  Financials: 2.1,
+  Industrials: 2.1,
+  Healthcare: 1.8,
+  Utilities: 1.6,
+  'Consumer Staples': 1.3,
+}
+const FUND_DAILY_SWING = {
+  GLBEQ: 1.4, // broad global index
+  NRDEQ: 1.6, // broad Nordic index
+  EMGEQ: 1.9, // emerging markets index
+  TECHF: 2.4, // sector fund: concentrated in technology
+  GRNEF: 1.8, // sector fund: green energy
+  MFBAL: 1.0, // balanced: part equities, part bonds
+  MFCON: 0.6, // conservative income: mostly bonds
+  MFPEN: 1.2,
+}
+function dailySwingFor(instrument) {
+  if (FUND_DAILY_SWING[instrument.ticker]) return FUND_DAILY_SWING[instrument.ticker]
+  const swing = SECTOR_DAILY_SWING[instrument.sector] ?? 2.2
+  return instrument.geography === 'Emerging Markets' ? swing * 1.2 : swing
+}
+
 const today = new Date('2026-09-06T00:00:00Z')
 const marketData = []
 const latestPriceByTicker = new Map()
@@ -134,7 +166,8 @@ for (const instrument of ALL_INSTRUMENTS) {
     } else if (instrument.assetType === 'Bond') {
       dailyReturn = float(-0.15, 0.18, 4) / 100
     } else {
-      dailyReturn = float(-2.2, 2.3, 4) / 100
+      const swing = dailySwingFor(instrument)
+      dailyReturn = float(-swing, (swing * 2.3) / 2.2, 4) / 100
     }
     price = Math.max(0.5, price * (1 + dailyReturn))
     dailyPrices.push({

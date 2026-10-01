@@ -8,7 +8,7 @@
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { Account, Customer, Instrument, Investment, MarketDataPoint, Transaction } from './types.js'
+import type { Account, BenchmarkData, Customer, Instrument, Investment, MarketDataPoint, Transaction } from './types.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 // Both `src` (via tsx) and `dist` (built) sit directly under /api, so the
@@ -26,6 +26,7 @@ export const accounts: Account[] = loadJson<Account[]>('accounts.json')
 export const transactions: Transaction[] = loadJson<Transaction[]>('transactions.json')
 export const investments: Investment[] = loadJson<Investment[]>('investments.json')
 export const marketData: MarketDataPoint[] = loadJson<MarketDataPoint[]>('market_data.json')
+export const benchmark: BenchmarkData = loadJson<BenchmarkData>('benchmarks.json')
 
 const investmentValueByAccount = new Map<string, number>()
 for (const investment of investments) {
@@ -84,6 +85,9 @@ export function getInvestmentsFor(customerId: string): Investment[] {
 }
 export function getMarketDataFor(ticker: string): MarketDataPoint[] {
   return marketDataByTicker.get(ticker) ?? []
+}
+export function getBenchmark(): BenchmarkData {
+  return benchmark
 }
 
 // All unique instruments across the entire synthetic universe, with latest price.

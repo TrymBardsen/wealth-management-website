@@ -2,8 +2,8 @@
 // from raw investment holdings + market data. Kept deterministic and
 // dependency-free so it's easy to read, test and extend during the
 // workshop.
-import { getInvestmentsFor, getMarketDataFor } from '../data.js'
-import type { Investment } from '../types.js'
+import { getBenchmark, getInvestmentsFor, getMarketDataFor } from '../data.js'
+import type { BenchmarkData, Investment } from '../types.js'
 
 export interface AllocationSlice {
   label: string
@@ -114,12 +114,61 @@ export interface PerformancePoint {
   value: number
 }
 
+export interface BenchmarkComparison {
+  ticker: string
+  name: string
+  source: string
+  fetched_at: string
+  // Index rebased so it starts at the portfolio's start value, making the
+  // two lines directly comparable on the same NOK axis.
+  series: PerformancePoint[]
+  period_return_pct: number
+  disclaimer: string
+}
+
 export interface PerformanceSummary {
   customer_id: string
   series: PerformancePoint[]
   period_return_pct: number
   start_value: number
   end_value: number
+  benchmark: BenchmarkComparison | null
+}
+
+// Closing level on the given date, or the most recent close before it
+// (the index does not trade on weekends and holidays).
+function levelOnOrBefore(series: BenchmarkData['series'], date: string): number | undefined {
+  let level: number | undefined
+  for (const point of series) {
+    if (point.date > date) break
+    level = point.value
+  }
+  return level
+}
+
+// Rebases the benchmark index onto the portfolio's start value for the same
+// dates. Returns null when there is nothing meaningful to compare against.
+function calculateBenchmark(series: PerformancePoint[]): BenchmarkComparison | null {
+  const benchmark = getBenchmark()
+  const startValue = series[0]?.value ?? 0
+  const startLevel = series[0] ? levelOnOrBefore(benchmark.series, series[0].date) : undefined
+  if (startValue <= 0 || !startLevel) return null
+
+  const rebased = series.map((point) => ({
+    date: point.date,
+    value: Number(((startValue * (levelOnOrBefore(benchmark.series, point.date) ?? startLevel)) / startLevel).toFixed(2)),
+  }))
+  const endValue = rebased[rebased.length - 1].value
+
+  return {
+    ticker: benchmark.ticker,
+    name: benchmark.name,
+    source: benchmark.source,
+    fetched_at: benchmark.fetched_at,
+    series: rebased,
+    period_return_pct: Number((((endValue - startValue) / startValue) * 100).toFixed(2)),
+    disclaimer: 'Real OSEBX closing levels, but the portfolio values are synthetic, so the comparison is illustrative only.',
+  }
 }
 
 // Reconstructs an illustrative historical portfolio value series by
@@ -157,5 +206,6 @@ export function calculatePerformance(customerId: string): PerformanceSummary {
     period_return_pct: periodReturnPct,
     start_value: Number(startValue.toFixed(2)),
     end_value: Number(endValue.toFixed(2)),
+    benchmark: calculateBenchmark(series),
   }
 }

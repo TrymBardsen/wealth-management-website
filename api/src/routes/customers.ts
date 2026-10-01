@@ -1,8 +1,9 @@
 import { Router } from 'express'
 import { customers, getAccountsFor, getAllHoldings, getAllInstruments, getCustomer, getInvestmentsFor, getTransactionsFor } from '../data.js'
 import { calculatePortfolio, calculatePerformance } from '../services/portfolio.js'
-import { calculateRisk } from '../services/risk.js'
+import { calculateRisk, calculateRiskContributions, calculateRiskHistory } from '../services/risk.js'
 import { generateInsights } from '../services/insights.js'
+import { suggestImprovements } from '../services/improvements.js'
 import { deterministicCopilot } from '../services/copilot.js'
 
 export const customersRouter = Router()
@@ -78,11 +79,35 @@ customersRouter.get('/:customerId/risk', (req, res) => {
   res.json(calculateRisk(customer.customer_id))
 })
 
+// GET /customers/:customerId/risk/history - daily risk score with today's
+// holdings replayed against historical prices.
+customersRouter.get('/:customerId/risk/history', (req, res) => {
+  const customer = requireCustomer(req.params.customerId)
+  if (!customer) return res.status(404).json({ error: 'Customer not found' })
+  res.json(calculateRiskHistory(customer.customer_id))
+})
+
+// GET /customers/:customerId/risk/contributions - each holding's share of
+// value vs. its share of the portfolio's swings.
+customersRouter.get('/:customerId/risk/contributions', (req, res) => {
+  const customer = requireCustomer(req.params.customerId)
+  if (!customer) return res.status(404).json({ error: 'Customer not found' })
+  res.json(calculateRiskContributions(customer.customer_id))
+})
+
 // GET /customers/:customerId/insights - deterministic rule-based insights.
 customersRouter.get('/:customerId/insights', (req, res) => {
   const customer = requireCustomer(req.params.customerId)
   if (!customer) return res.status(404).json({ error: 'Customer not found' })
   res.json(generateInsights(customer.customer_id))
+})
+
+// GET /customers/:customerId/improvements - rule-based what-if ideas that
+// re-score a hypothetical portfolio with the demo risk model.
+customersRouter.get('/:customerId/improvements', (req, res) => {
+  const customer = requireCustomer(req.params.customerId)
+  if (!customer) return res.status(404).json({ error: 'Customer not found' })
+  res.json(suggestImprovements(customer.customer_id))
 })
 
 // POST /customers/:customerId/copilot - chat-style Q&A over the customer's

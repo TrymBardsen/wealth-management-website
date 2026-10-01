@@ -85,7 +85,7 @@ export default function Dashboard() {
 
       <section className="panel">
         <h3>Portfolio performance</h3>
-        <PerformanceChart series={performance.series} />
+        <PerformanceChart performance={performance} showPeriodSelector />
       </section>
     </div>
   )
