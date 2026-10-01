@@ -1,5 +1,8 @@
 # Workshop-oppgave: Bygg Wealth Copilot
 
+**Prøv demoen:** [Åpne frontend](https://espkar.github.io/wealth-copilot-workshop/#/portfolio) ·
+[Åpne API-dokumentasjonen](https://wealth-copilot-api-8493.onrender.com/docs/#/)
+
 ## Utfordringen
 
 I samarbeid med Private Banking ønsker Nordea å utvikle en Wealth Copilot som skal gjøre kundens
