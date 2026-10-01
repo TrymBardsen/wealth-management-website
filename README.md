@@ -225,7 +225,7 @@ Gruppen besto av:
 - Jørgen Knutsvik
 - Harald Kryvi
 
-Videreutviklingen er gjort med Claude Code som parprogrammerer:
+Arbeidet er gjort med Claude Code som parprogrammerer:
 
 - risikomodellen og risikobidrag per investering
 - ulik volatilitet per instrument og OSEBX-sammenligning
