@@ -8,7 +8,7 @@ markedet faller. Kunden kan også be om egne rapporter som skrives av Claude, me
 bygger på beregnede tall fra kundens egne data.
 
 Prosjektet er laget som et gruppearbeid i en workshop om data- og AI-plattformer for
-kapital- og formuesforvaltning (se [Bakgrunn](#bakgrunn)).
+kapital- og formuesforvaltning 1. oktober 2026(se [Bakgrunn](#bakgrunn)).
 
 **Alle kunder, beholdninger og kurser er syntetiske. Dette er en pedagogisk demo, ikke et
 bank- eller investeringsprodukt, og ingenting her er investeringsråd.**
