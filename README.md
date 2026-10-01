@@ -7,8 +7,8 @@ står for svingningene, hvordan det passer kundens risikoprofil, og hva som skje
 markedet faller. Kunden kan også be om egne rapporter som skrives av Claude, men som alltid
 bygger på beregnede tall fra kundens egne data.
 
-Prosjektet er laget i en workshop om data- og AI-plattformer for kapital- og
-formuesforvaltning (se [Bakgrunn](#bakgrunn)).
+Prosjektet er laget som et gruppearbeid i en workshop om data- og AI-plattformer for
+kapital- og formuesforvaltning (se [Bakgrunn](#bakgrunn)).
 
 **Alle kunder, beholdninger og kurser er syntetiske. Dette er en pedagogisk demo, ikke et
 bank- eller investeringsprodukt, og ingenting her er investeringsråd.**
@@ -210,11 +210,20 @@ Dette er en prototype, og noen forenklinger er bevisste:
 
 ## Bakgrunn
 
-Prosjektet bygger på startpakken fra workshopen
+Prosjektet er et gruppearbeid fra en workshop om data- og AI-plattformer for kapital- og
+formuesforvaltning. Vi bygde videre på startpakken fra workshopen,
 [espkar/wealth-copilot-workshop](https://github.com/espkar/wealth-copilot-workshop), som ga
 de syntetiske dataene, et grunnleggende API og en enkel frontend. Workshopoppgaven står i
-[docs/workshop.md](docs/workshop.md). Jeg valgte case B, *Gjør investeringsrisiko synlig og
-forståelig*.
+[docs/workshop.md](docs/workshop.md). Gruppen valgte case B, *Gjør investeringsrisiko synlig
+og forståelig*.
+
+Gruppen besto av:
+
+- Trym Bårdsen
+- Thomas Strønstad-Løseth
+- William Solsvik
+- Jørgen Knutsvik
+- Harald Kryvi
 
 Videreutviklingen er gjort med Claude Code som parprogrammerer:
 
