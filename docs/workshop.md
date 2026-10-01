@@ -1,6 +1,6 @@
 # Workshop-oppgave: Bygg Wealth Copilot
 
-**Prøv demoen:** [Åpne frontend](https://espkar.github.io/wealth-copilot-workshop/#/portfolio) ·
+**Prøv demoen:** [Åpne frontend](https://espkar.github.io/wealth-copilot-workshop/#/) ·
 [Åpne API-dokumentasjonen](https://wealth-copilot-api-8493.onrender.com/docs/#/)
 
 ## Utfordringen
