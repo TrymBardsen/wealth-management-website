@@ -4,7 +4,6 @@ import { calculatePortfolio, calculatePerformance } from '../services/portfolio.
 import { calculateRisk, calculateRiskContributions, calculateRiskHistory } from '../services/risk.js'
 import { generateInsights } from '../services/insights.js'
 import { suggestImprovements } from '../services/improvements.js'
-import { deterministicCopilot } from '../services/copilot.js'
 
 export const customersRouter = Router()
 
@@ -108,15 +107,4 @@ customersRouter.get('/:customerId/improvements', (req, res) => {
   const customer = requireCustomer(req.params.customerId)
   if (!customer) return res.status(404).json({ error: 'Customer not found' })
   res.json(suggestImprovements(customer.customer_id))
-})
-
-// POST /customers/:customerId/copilot - chat-style Q&A over the customer's
-// own data. Body: { message: string }. Deterministic today; see
-// services/copilot.ts for how a real LLM could be plugged in later.
-customersRouter.post('/:customerId/copilot', (req, res) => {
-  const customer = requireCustomer(req.params.customerId)
-  if (!customer) return res.status(404).json({ error: 'Customer not found' })
-  const message = typeof req.body?.message === 'string' ? req.body.message : ''
-  if (!message.trim()) return res.status(400).json({ error: 'Request body must include a non-empty "message" string' })
-  res.json(deterministicCopilot.answer(customer.customer_id, message))
 })

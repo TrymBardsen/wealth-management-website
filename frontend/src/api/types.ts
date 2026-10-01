@@ -205,6 +205,8 @@ export interface ReportType {
 
 export interface ReportTypesResponse {
   ai_enabled: boolean
+  // Questions are saved and shared with the customer's advisor.
+  logging_enabled?: boolean
   max_question_length: number
   report_types: ReportType[]
 }
@@ -219,8 +221,41 @@ export interface Report {
   key_figures: Array<{ label: string; value: string; source: string; verified: boolean }>
   sections: Array<{ heading: string; paragraphs: string[] }>
   limitations: string[]
+  // Ids of report cards (src/reports/metrics.tsx) that illustrate the answer.
+  metrics?: string[]
   generated_by: { kind: 'ai' | 'template'; model?: string; note?: string }
   data_as_of: string
   data_period: { start: string; end: string }
   disclaimer: string
+}
+
+export interface Interaction {
+  id: string
+  customer_id: string
+  customer_name: string | null
+  created_at: string
+  prompt: string
+  status: string
+  report_title: string | null
+  summary: string | null
+  customer_notice: string | null
+  spec: { channel?: string; report?: Report } | null
+  metrics_used: string[]
+  topics: string[]
+  flags: string[]
+  model: string | null
+  latency_ms: number
+  reviewed_at: string | null
+  advisor_note: string | null
+}
+
+export interface CustomerInterest {
+  customer_id: string
+  name: string | null
+  risk_profile: string | null
+  question_count: number
+  unreviewed_count: number
+  last_asked_at: string
+  top_topics: string[]
+  flags: string[]
 }

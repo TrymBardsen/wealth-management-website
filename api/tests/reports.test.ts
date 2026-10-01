@@ -5,8 +5,9 @@ import { createApp } from '../src/app.js'
 import { REPORT_SYSTEM_PROMPT, createClaudeReportGenerator, parseReportContent } from '../src/services/reportAi.js'
 import { buildDataPack, isFigureGrounded, type ReportContent } from '../src/services/reports.js'
 import { templateReportGenerator } from '../src/services/reportTemplates.js'
+import { MemoryInteractionStore } from '../src/services/interactions.js'
 
-const app = createApp({ reportGenerator: templateReportGenerator })
+const app = createApp({ reportGenerator: templateReportGenerator, interactionStore: new MemoryInteractionStore() })
 // CUST-00001 holds an Asia Pacific stock (ASIP); CUST-00006 has no investments.
 const customerId = 'CUST-00001'
 
@@ -17,6 +18,7 @@ const validContent: ReportContent = {
   key_figures: [{ label: 'Risk score', value: '44', source: 'risk' }],
   sections: [{ heading: 'Drivers', paragraphs: ['Mostly asset mix.'] }],
   limitations: ['Synthetic data.'],
+  metrics: ['risk-score', 'profile-fit'],
 }
 
 function fakeClient(reply: Partial<Anthropic.Beta.BetaMessage> | Error) {
@@ -44,6 +46,7 @@ describe('POST /customers/:customerId/reports (templates)', () => {
     expect(res.body.key_figures.length).toBeGreaterThan(0)
     expect(res.body.key_figures.every((f: { verified: boolean }) => f.verified)).toBe(true)
     expect(res.body.disclaimer).toMatch(/not investment advice/i)
+    expect(res.body.metrics.length).toBeGreaterThan(0)
   })
 
   it('reports the same risk score as /risk', async () => {
@@ -153,6 +156,14 @@ describe('Claude report generator', () => {
 describe('parseReportContent', () => {
   it('accepts a valid report', () => {
     expect(parseReportContent(JSON.stringify(validContent))).toEqual(validContent)
+  })
+
+  it('drops unknown or repeated cards and keeps at most four', () => {
+    const parsed = parseReportContent(JSON.stringify({
+      ...validContent,
+      metrics: ['regions', 'made-up', 'regions', 'sectors', 'risk-score', 'drawdown', 'stress-test'],
+    }))
+    expect(parsed?.metrics).toEqual(['regions', 'sectors', 'risk-score', 'drawdown'])
   })
 
   it('rejects unknown data sources and missing fields', () => {

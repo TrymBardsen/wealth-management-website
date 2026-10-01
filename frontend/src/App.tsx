@@ -3,7 +3,9 @@ import Layout from './components/Layout'
 import Dashboard from './pages/Dashboard'
 import Portfolio from './pages/Portfolio'
 import Risk from './pages/Risk'
-import Reports from './pages/Reports'
+import ReportsLayout from './reports/ReportsLayout'
+import { AskAi, MetricsLibrary, ReportsHome, SavedReportView, StandardReportView } from './reports/ReportsViews'
+import Advisor from './pages/Advisor'
 import Copilot from './pages/Copilot'
 import { CustomerProvider } from './context/CustomerContext'
 
@@ -19,10 +21,18 @@ export default function App() {
             <Route index element={<Dashboard />} />
             <Route path="portfolio" element={<Portfolio />} />
             <Route path="risk" element={<Risk />} />
-            <Route path="reports" element={<Reports />} />
+            <Route path="reports" element={<ReportsLayout />}>
+              <Route index element={<ReportsHome tab="standard" />} />
+              <Route path="mine" element={<ReportsHome tab="mine" />} />
+              <Route path="mine/:savedId" element={<SavedReportView />} />
+              <Route path="standard/:reportId" element={<StandardReportView />} />
+              <Route path="metrics" element={<MetricsLibrary />} />
+              <Route path="ask" element={<AskAi />} />
+            </Route>
             {/* Insights now live on the Risk page; keep old links working. */}
             <Route path="insights" element={<Navigate to="/risk" replace />} />
             <Route path="copilot" element={<Copilot />} />
+            <Route path="advisor" element={<Advisor />} />
           </Route>
         </Routes>
       </HashRouter>

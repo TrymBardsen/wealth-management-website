@@ -7,6 +7,8 @@ import type {
   Account,
   Customer,
   CopilotReply,
+  CustomerInterest,
+  Interaction,
   ImprovementsSummary,
   InsightsSummary,
   Investment,
@@ -112,4 +114,50 @@ export async function askCopilot(customerId: string, message: string): Promise<C
     throw new Error(`Copilot request failed with status ${response.status}`)
   }
   return (await response.json()) as CopilotReply
+}
+
+// --- Advisor view (password protected) -------------------------------------
+
+// Thrown when the advisor session is missing or has expired.
+export class AdvisorAuthError extends Error {}
+
+async function advisorRequest<T>(path: string, token: string, init: RequestInit = {}): Promise<T> {
+  const response = await fetch(`${API_URL}${path}`, {
+    ...init,
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, ...init.headers },
+  })
+  const body = (await response.json().catch(() => null)) as (T & { error?: string }) | null
+  if (response.status === 401) throw new AdvisorAuthError(body?.error ?? 'Log in again.')
+  if (!response.ok) throw new Error(body?.error ?? `Request failed with status ${response.status}`)
+  return body as T
+}
+
+export async function advisorLogin(password: string): Promise<{ token: string; expires_at: string }> {
+  const response = await fetch(`${API_URL}/advisor/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password }),
+  })
+  const body = (await response.json().catch(() => null)) as { token?: string; expires_at?: string; error?: string } | null
+  if (!response.ok || !body?.token || !body.expires_at) throw new Error(body?.error ?? `Login failed with status ${response.status}`)
+  return { token: body.token, expires_at: body.expires_at }
+}
+
+export async function fetchAdvisorCustomers(token: string): Promise<{ storage: string; customers: CustomerInterest[] }> {
+  return advisorRequest('/advisor/customers', token)
+}
+
+export async function fetchAdvisorInteractions(
+  token: string,
+  customerId?: string,
+): Promise<{ storage: string; interactions: Interaction[] }> {
+  return advisorRequest(`/advisor/interactions?limit=100${customerId ? `&customer_id=${encodeURIComponent(customerId)}` : ''}`, token)
+}
+
+export async function reviewInteraction(
+  token: string,
+  id: string,
+  body: { reviewed: boolean; advisor_note?: string | null },
+): Promise<Interaction> {
+  return advisorRequest(`/advisor/interactions/${id}`, token, { method: 'PATCH', body: JSON.stringify(body) })
 }

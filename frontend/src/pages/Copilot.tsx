@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useCustomerContext } from '../context/CustomerContext'
 import { askCopilot } from '../api/client'
 
@@ -22,6 +23,13 @@ export default function Copilot() {
   const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const listRef = useRef<HTMLDivElement>(null)
+  const location = useLocation()
+
+  // Other pages can open the chat with a question ready to send.
+  useEffect(() => {
+    const question = (location.state as { question?: unknown } | null)?.question
+    if (typeof question === 'string') setInput(question)
+  }, [location.state])
 
   useEffect(() => {
     setMessages([
@@ -58,6 +66,9 @@ export default function Copilot() {
         <p className="eyebrow">Deterministic today, LLM-ready by design</p>
         <h2>Wealth Copilot</h2>
       </div>
+      {import.meta.env.VITE_ARTIFACT !== 'true' && (
+        <p className="sharing-note">Your questions and the answers are saved and shared with your private banker.</p>
+      )}
 
       <div className="copilot-suggestions">
         {SUGGESTED_QUESTIONS.map((question) => (

@@ -14,5 +14,7 @@ const app = createApp()
 app.listen(PORT, () => {
   console.log(`Wealth Copilot API listening on http://localhost:${PORT}`)
   console.log('All data served by this API is 100% synthetic / fictional.')
+  console.log(process.env.DATABASE_URL ? 'AI interaction log: Neon (ai_interactions).' : 'AI interaction log: in memory (no DATABASE_URL).')
+  console.log(process.env.ADVISOR_PASSWORD ? 'Advisor view: password protected.' : 'Advisor view: closed (no ADVISOR_PASSWORD).')
   console.log(process.env.ANTHROPIC_API_KEY ? 'AI reports: enabled (Claude).' : 'AI reports: disabled (no ANTHROPIC_API_KEY), using templates.')
 })

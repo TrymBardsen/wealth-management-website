@@ -59,6 +59,32 @@ export interface ReportRequest {
 // Report shape
 // ---------------------------------------------------------------------------
 
+// Visual cards a report can show. The frontend draws each one from the same
+// API data (frontend/src/reports/metrics.tsx); keep the ids in sync.
+export const METRICS = [
+  { id: 'profile-fit', description: 'Yearly swings of the portfolio and OSEBX against the typical range for the risk profile.' },
+  { id: 'risk-score', description: 'The 0-100 risk score against the band that fits the risk profile.' },
+  { id: 'score-breakdown', description: 'How asset mix, concentration, geography and volatility add up to the risk score.' },
+  { id: 'risk-per-holding', description: 'Each holding\'s share of the money next to its share of the swings.' },
+  { id: 'risk-over-time', description: 'The daily risk score over the period with today\'s holdings.' },
+  { id: 'asset-mix', description: 'Shares, funds, bonds and cash, from calm to volatile.' },
+  { id: 'holdings-map', description: 'Every holding as a box sized by its value.' },
+  { id: 'sectors', description: 'Share of the portfolio per sector.' },
+  { id: 'regions', description: 'Share of the portfolio per region.' },
+  { id: 'concentration', description: 'How many equally sized holdings the portfolio behaves like, and the top three\'s share.' },
+  { id: 'gains-since-purchase', description: 'Gain or loss since purchase for each holding.' },
+  { id: 'vs-osebx', description: 'Portfolio value against Oslo Børs (OSEBX) over the period.' },
+  { id: 'drawdown', description: 'The biggest fall from a peak during the period, for the portfolio and OSEBX.' },
+  { id: 'stress-test', description: 'What hypothetical market falls of 10, 20 and 30% would cost in NOK.' },
+  { id: 'monthly-swing', description: 'How much the portfolio can move in a normal month, in NOK.' },
+  { id: 'best-worst-day', description: 'The best and worst single day in the period, in NOK.' },
+  { id: 'insights', description: 'Rule-based warnings about concentration and profile fit.' },
+  { id: 'what-if', description: 'What-if simulations of simple changes and their effect on the risk score.' },
+] as const
+export type MetricId = (typeof METRICS)[number]['id']
+export const METRIC_IDS: string[] = METRICS.map((m) => m.id)
+export const MAX_REPORT_METRICS = 4
+
 export const DATA_SOURCES = [
   'customer',
   'portfolio',
@@ -82,6 +108,8 @@ export interface ReportContent {
   key_figures: Array<{ label: string; value: string; source: DataSource }>
   sections: Array<{ heading: string; paragraphs: string[] }>
   limitations: string[]
+  // Up to MAX_REPORT_METRICS cards that illustrate the answer, in order.
+  metrics: MetricId[]
 }
 
 // What the API returns: the content plus provenance added by the server.
@@ -180,7 +208,7 @@ export interface DataPack {
   by_geography: GroupFacts[]
   by_sector: GroupFacts[]
   by_asset_type: GroupFacts[]
-  requested_focus: (GroupFacts & { matched: string[] }) | null
+  requested_focus: (GroupFacts & { matched: string[]; field: 'geography' | 'sector' }) | null
   risk: {
     score: number
     category: string
@@ -283,7 +311,7 @@ export function buildDataPack(customerId: string, question = ''): DataPack {
     by_geography: groupBy(holdings, 'geography', total),
     by_sector: groupBy(holdings, 'sector', total),
     by_asset_type: groupBy(holdings, 'asset_type', total),
-    requested_focus: focus ? { ...summarise(focus.label, focusMembers, total), matched: focus.values } : null,
+    requested_focus: focus ? { ...summarise(focus.label, focusMembers, total), matched: focus.values, field: focus.field } : null,
     risk: {
       score: risk.risk_score,
       category: risk.risk_category,
@@ -354,6 +382,7 @@ export function finaliseReport(
     key_figures: content.key_figures.map((f) => ({ ...f, verified: isFigureGrounded(f.value, pack) })),
     sections: content.sections,
     limitations: content.limitations,
+    metrics: content.metrics.slice(0, MAX_REPORT_METRICS),
     generated_by: generatedBy,
     data_as_of: pack.as_of,
     data_period: { start: pack.period.start, end: pack.period.end },

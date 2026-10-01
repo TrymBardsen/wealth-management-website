@@ -47,6 +47,10 @@ export default function Layout() {
           <NavLink to="/risk">Risk</NavLink>
           <NavLink to="/reports">Reports</NavLink>
           <NavLink to="/copilot">Wealth Copilot</NavLink>
+          {/* The advisor view needs the API and Neon, which an artifact cannot reach. */}
+          {import.meta.env.VITE_ARTIFACT !== 'true' && (
+            <NavLink to="/advisor" className="app-nav__advisor">Advisor</NavLink>
+          )}
         </nav>
         <CustomerSelector />
       </header>

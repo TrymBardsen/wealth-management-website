@@ -31,6 +31,7 @@ function noHoldings(pack: DataPack, title: string): ReportContent {
     key_figures: [],
     sections: [],
     limitations: [],
+    metrics: [],
   }
 }
 
@@ -70,6 +71,7 @@ function riskProfile(pack: DataPack): ReportContent {
         : []),
     ],
     limitations: [...BASE_LIMITATIONS, 'The risk score is a simplified educational model.'],
+    metrics: ['profile-fit', 'risk-per-holding', 'score-breakdown'],
   }
 }
 
@@ -101,6 +103,7 @@ function performance(pack: DataPack): ReportContent {
       },
     ],
     limitations: [...BASE_LIMITATIONS, 'Portfolio values are synthetic, so the comparison with the real OSEBX index is illustrative.'],
+    metrics: ['vs-osebx', 'gains-since-purchase', 'drawdown'],
   }
 }
 
@@ -117,6 +120,7 @@ function regions(pack: DataPack): ReportContent {
     key_figures: pack.by_geography.slice(0, 4).map((g) => ({ label: g.label, value: pct(g.weight_pct), source: 'by_geography' as const })),
     sections: [{ heading: 'By region', paragraphs: pack.by_geography.map(groupParagraph) }],
     limitations: [...BASE_LIMITATIONS, '"Global" funds count as one region even though they invest in many countries.'],
+    metrics: ['regions', 'holdings-map'],
   }
 }
 
@@ -138,6 +142,7 @@ function diversification(pack: DataPack): ReportContent {
       { heading: 'By region', paragraphs: pack.by_geography.map(groupParagraph) },
     ],
     limitations: [...BASE_LIMITATIONS, '"Diversified" and "Global" funds are counted as single labels; their contents are unknown.'],
+    metrics: ['concentration', 'holdings-map', 'sectors', 'regions'],
   }
 }
 
@@ -152,6 +157,7 @@ function focusReport(pack: DataPack): ReportContent {
       key_figures: [],
       sections: [],
       limitations: ['Broad "Global" funds may contain some exposure that is not visible in the data.'],
+      metrics: [focus.field === 'geography' ? 'regions' : 'sectors'],
     }
   }
   return {
@@ -169,6 +175,7 @@ function focusReport(pack: DataPack): ReportContent {
       paragraphs: members.map((h) => `${h.name} (${h.ticker}): ${nok(h.value_nok)}, ${signedPct(h.period_return_pct)} over the period, ${signedPct(h.unrealized_gain_loss_pct)} since purchase.`),
     }],
     limitations: [...BASE_LIMITATIONS, 'Broad "Global" funds may contain some exposure that is not visible in the data.'],
+    metrics: [focus.field === 'geography' ? 'regions' : 'sectors', 'gains-since-purchase'],
   }
 }
 
@@ -180,6 +187,7 @@ function unsupported(): ReportContent {
     key_figures: [],
     sections: [{ heading: 'Ready-made reports', paragraphs: REPORT_TYPES.map((t) => `${t.title}: ${t.description}`) }],
     limitations: [],
+    metrics: [],
   }
 }
 

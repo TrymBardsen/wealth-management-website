@@ -93,6 +93,11 @@ GET  /customers/:customerId/risk/history
 GET  /customers/:customerId/risk/contributions
 GET  /customers/:customerId/insights
 GET  /customers/:customerId/improvements
+GET  /report-types
+POST /customers/:customerId/reports
+GET  /advisor/customers
+GET  /advisor/interactions
+PATCH /advisor/interactions/:id
 POST /customers/:customerId/copilot
 ```
 

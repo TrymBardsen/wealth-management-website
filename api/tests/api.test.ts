@@ -3,9 +3,10 @@ import request from 'supertest'
 import { createApp } from '../src/app.js'
 import { customers } from '../src/data.js'
 import { templateReportGenerator } from '../src/services/reportTemplates.js'
+import { MemoryInteractionStore } from '../src/services/interactions.js'
 
 // Templates only, so the tests never call an external model.
-const app = createApp({ reportGenerator: templateReportGenerator })
+const app = createApp({ reportGenerator: templateReportGenerator, interactionStore: new MemoryInteractionStore() })
 const sampleCustomerId = customers[0].customer_id
 
 describe('GET /health', () => {

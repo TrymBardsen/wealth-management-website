@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useCustomerContext } from '../context/CustomerContext'
 import {
   fetchImprovements,
@@ -22,11 +23,14 @@ import type {
 } from '../api/types'
 import ImprovementIdeas from '../components/ImprovementIdeas'
 import InsightCard from '../components/InsightCard'
-import { BarList, ContributionBars, HoldingsTreemap, RiskHistoryChart, RiskScale, StackedBar } from '../components/RiskVisuals'
+import { KeyRiskFacts, SectorRiskBars, SwingCard } from '../components/RiskOverview'
+import { BarList, HoldingsTreemap, RiskHistoryChart, RiskScale, StackedBar } from '../components/RiskVisuals'
 import { formatCurrency } from '../utils/format'
+import { PROFILE_VOLATILITY, annualVolatilityPct, dataAgeDays } from '../utils/reportMetrics'
 import {
   EXPECTED_CATEGORY,
   RISK_FACTORS,
+  RISK_INSIGHT_IDS,
   VOLATILE_ASSET_TYPES,
   assetTypeColor,
   biggestOutsizedHolding,
@@ -39,10 +43,10 @@ import {
 } from '../utils/risk'
 
 const STRESS_DROP_PCT = 30
+// Warn when the latest prices are older than this.
+const STALE_AFTER_DAYS = 3
+const COPILOT_QUESTION = 'What are the largest risks in my portfolio?'
 
-// Insight rules from api/src/services/insights.ts that are about risk. The
-// savings-rate and performance-change insights are left out on purpose.
-const RISK_INSIGHT_IDS = ['risk-profile-mismatch', 'sector-concentration', 'geography-concentration', 'high-cash-allocation']
 
 function formatDay(date: string) {
   return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long' }).format(new Date(date))
@@ -57,6 +61,10 @@ function alignmentSentence(risk: RiskSummary) {
   return `That is lower than what is typical for your ${profile} risk profile.`
 }
 
+function formatShortDate(date: string) {
+  return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(date))
+}
+
 function FactorCard({ factorKey, title, children }: { factorKey: string; title: string; children: React.ReactNode }) {
   const color = RISK_FACTORS.find((f) => f.key === factorKey)?.color
   return (
@@ -68,7 +76,8 @@ function FactorCard({ factorKey, title, children }: { factorKey: string; title: 
 }
 
 export default function Risk() {
-  const { selectedCustomerId } = useCustomerContext()
+  const { selectedCustomerId, selectedCustomer } = useCustomerContext()
+  const navigate = useNavigate()
   const [risk, setRisk] = useState<RiskSummary | null>(null)
   const [portfolio, setPortfolio] = useState<PortfolioSummary | null>(null)
   const [investments, setInvestments] = useState<Investment[]>([])
@@ -118,9 +127,22 @@ export default function Risk() {
   if (!risk || !portfolio || !performance) return null
 
   const heading = (
-    <div className="page-heading">
-      <p className="eyebrow">Understand your risk</p>
-      <h2>Risk</h2>
+    <div className="risk-heading">
+      <div className="page-heading">
+        <p className="eyebrow">Risk and insight</p>
+        <h2>Where does your risk come from?</h2>
+        <p className="risk-heading__lead">
+          {selectedCustomer ? `${selectedCustomer.first_name}, here` : 'Here'} you can see how much your portfolio can
+          swing, which investments account for the swings, and whether that fits your risk profile.
+        </p>
+      </div>
+      <button
+        type="button"
+        className="risk-heading__ask"
+        onClick={() => navigate('/copilot', { state: { question: COPILOT_QUESTION } })}
+      >
+        Ask Copilot about your risk
+      </button>
     </div>
   )
 
@@ -157,6 +179,10 @@ export default function Risk() {
   const hasGlobalFunds = portfolio.allocation_by_geography.some((s) => s.label === 'Global')
 
   const swings = summariseSwings(performance.series)
+  const volatility = annualVolatilityPct(performance.series)
+  const profileRange = PROFILE_VOLATILITY[risk.customer_risk_profile] ?? PROFILE_VOLATILITY.Balanced
+  const latestPriceDate = performance.series[performance.series.length - 1]?.date
+  const ageDays = latestPriceDate ? dataAgeDays(latestPriceDate) : 0
   const riskTrend = history ? describeRiskTrend(history.series) : null
   const sectorShift = history ? describeSectorShift(history.biggest_sector_shift) : null
   const outsized = holdingContributions ? biggestOutsizedHolding(holdingContributions.holdings) : null
@@ -165,24 +191,52 @@ export default function Risk() {
     <div className="page">
       {heading}
 
-      <section className="panel risk-summary">
-        <p className="risk-summary__headline">
-          Your portfolio’s risk is <strong>{risk.risk_category.toLowerCase()}</strong> ({risk.risk_score} of 100).{' '}
-          {alignmentSentence(risk)}
+      {latestPriceDate && ageDays > STALE_AFTER_DAYS && (
+        <p className="stale-banner" role="status">
+          <span aria-hidden="true">⚠</span> The latest prices are from {formatShortDate(latestPriceDate)} ({ageDays} days
+          old). Your actual risk may have changed since.
         </p>
-        <RiskScale score={risk.risk_score} expected={expected} profile={risk.customer_risk_profile} />
-      </section>
+      )}
 
-      {insights.length > 0 && (
-        <section className="risk-insights">
-          <h3>Insights</h3>
+      <div className="risk-hero">
+        {volatility !== null ? (
+          <SwingCard
+            volatility={volatility}
+            totalValue={portfolio.total_value}
+            range={profileRange}
+            profile={risk.customer_risk_profile}
+          />
+        ) : (
+          <section className="swing-card"><p className="empty-state">Not enough price history to measure the swings.</p></section>
+        )}
+        {holdingContributions && (
+          <KeyRiskFacts
+            holdings={holdingContributions.holdings}
+            assetMix={portfolio.allocation_by_asset_type}
+            performance={performance}
+            profile={risk.customer_risk_profile}
+          />
+        )}
+      </div>
+
+      <section className="risk-insights">
+        <div className="risk-insights__heading">
+          <div>
+            <p className="eyebrow">Insight</p>
+            <h3>What you should know about your finances</h3>
+          </div>
+          <span className="risk-insights__chip">Rule-based from your data</span>
+        </div>
+        {insights.length > 0 ? (
           <div className="insight-grid">
             {insights.map((insight) => (
               <InsightCard key={insight.id} insight={insight} />
             ))}
           </div>
-        </section>
-      )}
+        ) : (
+          <p className="empty-state">Nothing to flag right now: your portfolio is not heavily concentrated and fits your profile.</p>
+        )}
+      </section>
 
       {history && riskTrend && (
         <section className="panel">
@@ -202,14 +256,14 @@ export default function Risk() {
             {outsized ? (
               <>
                 <strong>{outsized.name}</strong> is {outsized.value_pct.toFixed(0)}% of your money, but{' '}
-                <strong>{outsized.swing_share_pct.toFixed(0)}%</strong> of the swings, because it moves more than your
-                other investments.
+                <strong>{outsized.swing_share_pct.toFixed(0)}%</strong> of the swings.{' '}
               </>
             ) : (
-              'Your investments contribute to the swings roughly in line with their size.'
+              'Your investments contribute to the swings roughly in line with their size. '
             )}
+            Click a sector to see the investments behind it.
           </p>
-          <ContributionBars holdings={holdingContributions.holdings} />
+          <SectorRiskBars holdings={holdingContributions.holdings} />
           <p className="factor-card__note">{holdingContributions.method}</p>
         </section>
       )}
@@ -217,8 +271,11 @@ export default function Risk() {
       <section className="panel">
         <h3>What makes up your score</h3>
         <p className="panel__lead">
-          The score adds up four things. The biggest driver for you is <strong>{biggestDriver.label.toLowerCase()}</strong>.
+          Your risk score is <strong>{risk.risk_score} of 100</strong> ({risk.risk_category.toLowerCase()}).{' '}
+          {alignmentSentence(risk)} The score adds up four things; the biggest driver for you is{' '}
+          <strong>{biggestDriver.label.toLowerCase()}</strong>.
         </p>
+        <RiskScale score={risk.risk_score} expected={expected} profile={risk.customer_risk_profile} />
         <StackedBar
           segments={contributions.map((c) => ({
             label: c.label,

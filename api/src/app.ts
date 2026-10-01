@@ -5,6 +5,10 @@ import cors from 'cors'
 import swaggerUi from 'swagger-ui-express'
 import { customersRouter } from './routes/customers.js'
 import { createReportsRouter } from './routes/reports.js'
+import { createCopilotRouter } from './routes/copilot.js'
+import { createAdvisorRouter } from './routes/advisor.js'
+import { createDefaultInteractionStore, type InteractionStore } from './services/interactions.js'
+import { createAdvisorAuth } from './services/advisorAuth.js'
 import { createDefaultReportGenerator } from './services/reportAi.js'
 import type { ReportGenerator } from './services/reports.js'
 import { getAllHoldings, getAllInstruments } from './data.js'
@@ -13,6 +17,11 @@ import { loadOpenApiSpec } from './docs.js'
 export interface AppOptions {
   // Defaults to Claude when ANTHROPIC_API_KEY is set, otherwise templates.
   reportGenerator?: ReportGenerator
+  // Defaults to Neon when DATABASE_URL is set, otherwise in memory.
+  interactionStore?: InteractionStore
+  // Password for the advisor view. Defaults to ADVISOR_PASSWORD; without
+  // one the advisor endpoints stay closed.
+  advisorPassword?: string
 }
 
 export function createApp(options: AppOptions = {}) {
@@ -31,7 +40,10 @@ export function createApp(options: AppOptions = {}) {
   })
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiSpec))
 
-  app.use(createReportsRouter(options.reportGenerator ?? createDefaultReportGenerator()))
+  const interactionStore = options.interactionStore ?? createDefaultInteractionStore()
+  app.use(createReportsRouter(options.reportGenerator ?? createDefaultReportGenerator(), interactionStore))
+  app.use(createCopilotRouter(interactionStore))
+  app.use(createAdvisorRouter(interactionStore, createAdvisorAuth(options.advisorPassword ?? process.env.ADVISOR_PASSWORD)))
   app.use('/customers', customersRouter)
 
   // Top-level discovery endpoints for workshop participants.

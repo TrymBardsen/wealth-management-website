@@ -1,10 +1,11 @@
 import { Router } from 'express'
 import { getCustomer } from '../data.js'
+import { interactionFromReport, logInteraction, type InteractionStore } from '../services/interactions.js'
 import { MAX_QUESTION_LENGTH, REPORT_TYPES, findReportType, type ReportGenerator, type ReportRequest } from '../services/reports.js'
 
-// The generator is injected so tests (and deployments without an API key)
-// can use the deterministic templates.
-export function createReportsRouter(generator: ReportGenerator) {
+// The generator and store are injected so tests (and deployments without an
+// API key or database) can use templates and an in-memory log.
+export function createReportsRouter(generator: ReportGenerator, store: InteractionStore) {
   const router = Router()
 
   // GET /report-types - ready-made reports and whether free-text questions
@@ -12,6 +13,8 @@ export function createReportsRouter(generator: ReportGenerator) {
   router.get('/report-types', (_req, res) => {
     res.json({
       ai_enabled: generator.kind === 'ai',
+      // Customers are told their questions are shared with their advisor.
+      logging_enabled: true,
       max_question_length: MAX_QUESTION_LENGTH,
       report_types: REPORT_TYPES.map(({ id, title, description }) => ({ id, title, description })),
     })
@@ -41,7 +44,10 @@ export function createReportsRouter(generator: ReportGenerator) {
     }
 
     try {
-      res.json(await generator.generate(customer.customer_id, request))
+      const started = performance.now()
+      const report = await generator.generate(customer.customer_id, request)
+      await logInteraction(store, interactionFromReport(report, performance.now() - started))
+      res.json(report)
     } catch (error) {
       next(error)
     }

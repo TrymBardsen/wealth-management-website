@@ -28,6 +28,10 @@ export const EXPECTED_CATEGORY: Record<string, RiskCategory> = {
   Aggressive: 'High',
 }
 
+// Insight rules from api/src/services/insights.ts that are about risk. The
+// savings-rate and performance-change insights are left out on purpose.
+export const RISK_INSIGHT_IDS = ['risk-profile-mismatch', 'sector-concentration', 'geography-concentration', 'high-cash-allocation']
+
 // Asset types ordered from calm to volatile, coloured cool to warm.
 export const ASSET_TYPES: Array<{ label: string; color: string }> = [
   { label: 'Cash', color: '#94a3b8' },
